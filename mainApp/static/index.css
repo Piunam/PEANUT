@@ -15,7 +15,6 @@
 
 .card{
     width: 100%;
-    background-color: #282c34;
 }
 
 .social-container {
@@ -25,4 +24,7 @@
 .btn a, .btn a:hover {
     color: white;
     text-decoration: none;
+}
+.status-text{
+    color: white;
 }
