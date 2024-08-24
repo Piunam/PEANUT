@@ -6,6 +6,7 @@ class Room(models.Model):
     is_occupied = models.BooleanField(default=False)
     max_capacity = models.IntegerField(default=2)
     current_players = models.IntegerField(default=0)
+    # is_over = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -80,4 +81,5 @@ class Achievement(models.Model):
 
     def str(self):
         return self.title
+    
 

@@ -37,5 +37,6 @@ urlpatterns = [
     path('accounts/community_page/', views.community_page, name='community_page'),
     path('thank_you/', views.thank_you, name='thank_you'),
     path('accounts/store/', views.store, name='store'),
+    path('submit-answer/', views.submit_answer, name='submit_answer'),
     
 ]
