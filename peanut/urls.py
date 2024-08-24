@@ -16,18 +16,26 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from django.contrib.auth import views as auth_views
+from django.contrib.auth import views  as auth_views
 from mainApp import views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/',views.login, name='login'),
+    path('login/',views.user_login, name='login'),
+    path('accounts/post_job/', views.post_job, name='post_job'),
+    path('accounts/post_achievement/', views.post_achievement, name='post_achievement'),
     path('logout/', views.logout_view, name='logout'),
     path('social-auth', include('social_django.urls', namespace='social')),
     path("", views.home, name='home'),
     path('question-page/', views.question_page, name='question_page'),
     path('start-match/', views.start_match, name='start_match'),
     path('check-room-status/', views.check_room_status, name='check_room_status'),
-    path('accounts/profile/', views.profile),
+    path('accounts/profile/', views.profile,name='profile'),
+    path('accounts/edit_profile/', views.edit_profile, name='edit_profile'),
+    path('register/', views.register, name='register'),
+    path('accounts/community_page/', views.community_page, name='community_page'),
+    path('thank_you/', views.thank_you, name='thank_you'),
+    path('accounts/store/', views.store, name='store'),
+    
 ]

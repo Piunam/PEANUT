@@ -1,0 +1,272 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Page</title>
+</head>
+<body>
+    <h1>Welcome to the Community Page</h1>
+
+    <!-- Section for Hirers to Post Jobs -->
+    {% if user.user_type == 'hirer' %}
+    <div>
+        <h2>Post a Job</h2>
+        <form method="POST" action="{% url 'post_job' %}">
+            {% csrf_token %}
+            <div>
+                <label for="job_title">Job Title:</label>
+                <input type="text" id="job_title" name="job_title" required>
+            </div>
+            <div>
+                <label for="job_description">Job Description:</label>
+                <textarea id="job_description" name="job_description" required></textarea>
+            </div>
+            <div>
+                <label for="job_requirements">Job Requirements:</label>
+                <textarea id="job_requirements" name="job_requirements" required></textarea>
+            </div>
+            <button type="submit">Post Job</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <!-- Section for Hirees to Post Achievements -->
+    {% if user.user_type == 'hiree' %}
+    <div>
+        <h2>Post Your Achievement</h2>
+        <form method="POST" action="{% url 'post_achievement' %}">
+            {% csrf_token %}
+            <div>
+                <label for="achievement_title">Achievement Title:</label>
+                <input type="text" id="achievement_title" name="achievement_title" required>
+            </div>
+            <div>
+                <label for="achievement_description">Achievement Description:</label>
+                <textarea id="achievement_description" name="achievement_description" required></textarea>
+            </div>
+            <button type="submit">Post Achievement</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <!-- Display Posted Jobs -->
+    <div>
+        <h2>Available Jobs</h2>
+        <ul>
+            {% for job in jobs %}
+            <li>
+                <h3>{{ job.title }}</h3>
+                <p>{{ job.description }}</p>
+                <p><strong>Requirements:</strong> {{ job.requirements }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Display Posted Achievements -->
+    <div>
+        <h2>Hiree Achievements</h2>
+        <ul>
+            {% for achievement in achievements %}
+            <li>
+                <h3>{{ achievement.title }}</h3>
+                <p>{{ achievement.description }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html> {% endcomment %}
+
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Page</title>
+</head>
+<body>
+    <h1>Welcome to the Community Page</h1>
+
+    <!-- Redirect Button for Hirers to Post Jobs -->
+    {% if user.user_type == 'hirer' %}
+    <div>
+        <a href="{% url 'post_job' %}" class="btn btn-primary">Post a New Job</a>
+    </div>
+    {% endif %}
+
+    <!-- Section for Hirers to Post Jobs -->
+    {% if user.user_type == 'hirer' %}
+    <div>
+        <h2>Post a Job</h2>
+        <form method="POST" action="{% url 'post_job' %}">
+            {% csrf_token %}
+            <div>
+                <label for="job_title">Job Title:</label>
+                <input type="text" id="job_title" name="job_title" required>
+            </div>
+            <div>
+                <label for="job_description">Job Description:</label>
+                <textarea id="job_description" name="job_description" required></textarea>
+            </div>
+            <div>
+                <label for="job_requirements">Job Requirements:</label>
+                <textarea id="job_requirements" name="job_requirements" required></textarea>
+            </div>
+            <button type="submit">Post Job</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <!-- Section for Hirees to Post Achievements -->
+    {% if user.user_type == 'hiree' %}
+    <div>
+        <h2>Post Your Achievement</h2>
+        <form method="POST" action="{% url 'post_achievement' %}">
+            {% csrf_token %}
+            <div>
+                <label for="achievement_title">Achievement Title:</label>
+                <input type="text" id="achievement_title" name="achievement_title" required>
+            </div>
+            <div>
+                <label for="achievement_description">Achievement Description:</label>
+                <textarea id="achievement_description" name="achievement_description" required></textarea>
+            </div>
+            <button type="submit">Post Achievement</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <!-- Display Posted Jobs -->
+    <div>
+        <h2>Available Jobs</h2>
+        <ul>
+            {% for job in jobs %}
+            <li>
+                <h3>{{ job.title }}</h3>
+                <p>{{ job.description }}</p>
+                <p><strong>Requirements:</strong> {{ job.requirements }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Display Posted Achievements -->
+    <div>
+        <h2>Hiree Achievements</h2>
+        <ul>
+            {% for achievement in achievements %}
+            <li>
+                <h3>{{ achievement.title }}</h3>
+                <p>{{ achievement.description }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html> {% endcomment %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Page</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'community_page' %}">Community</a></li>
+                <li><a href="{% url 'store' %}">Store</a></li>
+                {% comment %} {% if user.user_type == 'hirer' %} {% endcomment %}
+                <li><a href="{% url 'post_job' %}">Post Job</a></li>
+                {% comment %} {% endif %} {% endcomment %}
+                {% comment %} {% if user.user_type == 'hiree' %} {% endcomment %}
+                <li><a href="{% url 'post_achievement' %}">Post Achievement</a></li>
+                {% comment %} {% endif %} {% endcomment %}
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Welcome to the Community Page</h1>
+
+        <!-- Section for Hirers to Post Jobs -->
+        {% if user.user_type == 'hirer' %}
+        <div>
+            <h2>Post a Job</h2>
+            <form method="POST" action="{% url 'post_job' %}">
+                {% csrf_token %}
+                <div>
+                    <label for="job_title">Job Title:</label>
+                    <input type="text" id="job_title" name="job_title" required>
+                </div>
+                <div>
+                    <label for="job_description">Job Description:</label>
+                    <textarea id="job_description" name="job_description" required></textarea>
+                </div>
+                <div>
+                    <label for="job_requirements">Job Requirements:</label>
+                    <textarea id="job_requirements" name="job_requirements" required></textarea>
+                </div>
+                <button type="submit">Post Job</button>
+            </form>
+        </div>
+        {% endif %}
+
+        <!-- Section for Hirees to Post Achievements -->
+        {% if user.user_type == 'hiree' %}
+        <div>
+            <h2>Post Your Achievement</h2>
+            <form method="POST" action="{% url 'post_achievement' %}">
+                {% csrf_token %}
+                <div>
+                    <label for="achievement_title">Achievement Title:</label>
+                    <input type="text" id="achievement_title" name="achievement_title" required>
+                </div>
+                <div>
+                    <label for="achievement_description">Achievement Description:</label>
+                    <textarea id="achievement_description" name="achievement_description" required></textarea>
+                </div>
+                <button type="submit">Post Achievement</button>
+            </form>
+        </div>
+        {% endif %}
+
+        <!-- Display Posted Jobs -->
+        <div>
+            <h2>Available Jobs</h2>
+            <ul>
+                {% for job in jobs %}
+                <li>
+                    <h3>{{ job.title }}</h3>
+                    <p>{{ job.description }}</p>
+                    <p><strong>Requirements:</strong> {{ job.requirements }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Display Posted Achievements -->
+        <div>
+            <h2>Hiree Achievements</h2>
+            <ul>
+                {% for achievement in achievements %}
+                <li>
+                    <h3>{{ achievement.title }}</h3>
+                    <p>{{ achievement.description }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Welcome, {{ user.username }}!</h1>
+
+        <section>
+            <h2>Profile Details</h2>
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>User Type:</strong> {{ user.user_type }}</p> <!-- Display user type -->
+        </section>
+
+        <section>
+            <h2>Actions</h2>
+            <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+            <!-- Assuming you have an 'edit_profile' view to handle profile editing -->
+        </section>
+    </main>
+</body>
+</html>
+
+
+
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Welcome, {{ user.username }}!</h1>
+
+        <section>
+            <h2>Profile Details</h2>
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <!-- Add more profile details here if needed -->
+        </section>
+
+        <section>
+            <h2>Actions</h2>
+            <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+            <!-- Assuming you have an 'edit_profile' view to handle profile editing -->
+        </section>
+    </main>
+</body>
+</html> {% endcomment %}

@@ -4,12 +4,14 @@ from django.http import HttpResponse, HttpRequest, JsonResponse
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
-from .models import Room, Player 
+from mainApp.models import *
+from mainApp.forms import*
+from django.contrib import messages
 
 # Create your views here.
 
-def login(request):
-    return render(request, 'login.html')
+# def login(request):
+#     return render(request, 'login.html')
 
 @login_required
 def home(request):
@@ -23,12 +25,123 @@ def home(request):
     }
     return render(request, 'home.html', context)
 
-def profile(request:HttpRequest):
-    return HttpResponse('Hello!')
 
+@login_required
+
+def profile(request:HttpRequest):
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # Redirect to the profile page after saving
+    else:
+        form = UserProfileForm(instance=request.user)
+    
+    return render(request, 'profile.html', {'form': form})
 def logout_view(request):
     logout(request)
     return redirect('home')
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = EditProfileForm(instance=request.user)
+    
+    return render(request, 'edit_profile.html', {'form': form})
+
+
+#registration......................
+
+def register(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        email = request.POST['email']
+        user_type = request.POST['user_type']
+        
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'Username already exists')
+        else:
+            print("HI")
+            print(user_type)
+            new_user = User(username=username, password=password, email=email, user_type=user_type)
+            new_user.save()
+            return redirect('thank_you')
+
+    return render(request, 'register.html')
+
+#community.........................................................
+
+
+@login_required
+def community_page(request):
+    # Fetch all jobs and achievements to display
+    jobs = Job.objects.all()
+    achievements = Achievement.objects.all()
+
+    context = {
+        'jobs': jobs,
+        'achievements': achievements,
+    }
+
+    return render(request, 'community_page.html', context)
+
+@login_required
+def post_job(request):
+    if request.method == 'POST':
+        form = JobForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('community_page')
+    else:
+        form = JobForm()
+    return render(request, 'post_job.html', {'form': form})
+
+@login_required
+def post_achievement(request):
+    if request.method == 'POST':
+        form = AchievementForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('community_page')
+    else:
+        form = AchievementForm()
+    return render(request, 'post_achievement.html', {'form': form})
+
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = User.objects.get(username=username, password=password)
+
+        if user:
+            if user.user_type == 'hiree':
+                # return redirect('hiree_home')
+                return redirect('home')
+            elif user.user_type == 'hirer':
+                return redirect('community_page')
+            
+        else:
+            messages.error(request, 'Invalid credentials')
+
+    return render(request, 'user_login.html')
+
+def thank_you(request):
+    return render(request, 'thank_you.html')
+
+
+
+
+@login_required
+def store(request):
+    return render(request, 'store.html')
 
 @csrf_exempt
 @login_required
@@ -53,11 +166,7 @@ def start_match(request):
             # Create a new room if no available room is found
             room = Room.objects.create(name=f"Room-{Room.objects.count() + 1}")
             print("New Room created :)", room.id)
-            
-
-       
-
-        # Assign player to room
+            # Assign player to room
         room.current_players += 1
         player.room = room
         player.is_in_queue = True

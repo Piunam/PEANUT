@@ -1,0 +1,176 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'community_page' %}">Community</a></li>
+                <li><a href="{% url 'store' %}">Store</a></li>
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+
+        <title>Peanuts Emporium</title>
+        <style>
+            body {
+                font-family: 'Pixel', sans-serif;
+                background-color: #4B0082;
+                color: white;
+                text-align: center;
+                margin: 0;
+                padding: 0;
+            }
+            .header {
+                background-color: #FFD700;
+                padding: 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .header h1 {
+                margin: 0;
+            }
+            .nav {
+                display: flex;
+                justify-content: space-around;
+                padding: 10px 0;
+            }
+            .nav a {
+                color: white;
+                text-decoration: none;
+                font-size: 20px;
+            }
+            .store-container {
+                margin: 20px auto;
+                padding: 10px;
+                max-width: 80%;
+                background-color: #FFD700;
+                border-radius: 15px;
+            }
+            .item-container {
+                display: flex;
+                justify-content: space-around;
+                padding: 20px;
+            }
+            .item {
+                background-color: #4B0082;
+                padding: 10px;
+                border-radius: 10px;
+                width: 150px;
+                color: yellow;
+            }
+            .item img {
+                width: 100px;
+                height: 100px;
+            }
+            .footer {
+                padding: 10px;
+                background-color: #FFD700;
+                color: #4B0082;
+                font-size: 14px;
+            }
+            .character {
+                position: absolute;
+                bottom: 10px;
+                left: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Peanuts</h1>
+            <div class="nav">
+                <a href="#">Practice</a>
+                <a href="#">Learn</a>
+                <a href="#">Community</a>
+            </div>
+            <div class="profile">
+                <img src="profile-pic.png" alt="Profile" width="50">
+            </div>
+        </div>
+    
+        <div class="store-container">
+            <h2>PEANUTS EMPORIUM</h2>
+            <div class="item-container">
+                <div class="item">
+                    <img src="basic-hint.png" alt="Basic Hint">
+                    <p>BASIC HINT</p>
+                    <p>25.00</p>
+                </div>
+                <div class="item">
+                    <img src="standard-hint.png" alt="Standard Hint">
+                    <p>STANDARD HINT</p>
+                    <p>50.00</p>
+                </div>
+                <div class="item">
+                    <img src="advanced-hint.png" alt="Advanced Hint">
+                    <p>ADVANCED HINT</p>
+                    <p>100.00</p>
+                </div>
+                <div class="item">
+                    <img src="time-extension.png" alt="Time Extension">
+                    <p>TIME EXTENSION</p>
+                    <p>15.00</p>
+                </div>
+                <div class="item">
+                    <img src="another-try.png" alt="Another Try">
+                    <p>ANOTHER TRY</p>
+                    <p>65.00</p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="footer">
+            <p>Get What Pleases You!</p>
+        </div>
+    
+        <div class="character">
+            <img src="character.png" alt="Character" width="100">
+            <p>"Hmm... Looks Good!"</p>
+        </div>
+    </body>
+    </html>
+     {% endcomment %}
+
+    {% comment %} <main>
+        <h1>Welcome to the Store</h1>
+
+        <section>
+            <h2>Product List</h2>
+            <div class="product-list">
+                {% for product in products %}
+                <div class="product-item">
+                    <h3>{{ product.name }}</h3>
+                    <p><strong>Price:</strong> ${{ product.price }}</p>
+                    <p>{{ product.description }}</p>
+                    <a href="{% url 'product_detail' product.id %}" class="btn btn-primary">View Details</a>
+                    <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary">Add to Cart</button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Your Store Name. All rights reserved.</p>
+    </footer>
+</body>
+</html> {% endcomment %}
+
+
+

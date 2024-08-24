@@ -49,3 +49,35 @@ class Player(models.Model):
 
     def __str__(self):
         return self.username
+
+
+class User(models.Model):
+    username = models.CharField(max_length=150, unique=True)
+    password = models.CharField(max_length=150)
+    email = models.EmailField(unique=True)
+    USER_TYPE_CHOICES = (
+        ('hiree', 'Hiree'),
+        ('hirer', 'Hirer'),
+    )
+    user_type = models.CharField(max_length=5, choices=USER_TYPE_CHOICES)
+
+
+#community shiy
+
+class Job(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    requirements = models.TextField()
+    posted_at = models.DateTimeField(auto_now_add=True)
+
+    def str(self):
+        return self.title
+
+class Achievement(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    posted_at = models.DateTimeField(auto_now_add=True)
+
+    def str(self):
+        return self.title
+

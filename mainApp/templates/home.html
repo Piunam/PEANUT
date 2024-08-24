@@ -5,12 +5,39 @@
 <link rel="stylesheet" href="{% static 'index.css' %}">
 <script src="{% static 'js/matchmaking.js' %}"></script>
 
-<h1>Welcome to the Coding Match</h1>
-<h4 class="text-center">Welcome, {{ user.username }}</h4>
+<header>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'community_page' %}">Community</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li>
+                    <!-- Logout Form -->
+                    <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" style="background:none;border:none;color:#007bff;cursor:pointer;">Logout</button>
+                    </form>
+                </li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+
+<div class="row">
+    <div class="col-sm-12 mb-3">
+        <h4 class="text-center">Welcome, {{ user.username }}</h4>
+    </div>
+</div>
 
 <!-- Display the player's rank -->
 <p>Your current rank: {{ player.rank }}</p>
 
-<button id="start-match-button">Start Match</button>
-<p id="status-text"></p> 
+<div class="text-center">
+    <button id="start-match-button">Start Match</button>
+    <p id="status-text"></p>
+</div>
+
 {% endblock %}
