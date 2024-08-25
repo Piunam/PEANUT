@@ -1,79 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Link to your CSS file -->
+    <link rel="stylesheet" href="{% static 'index.css' %}"> <!-- Link to your CSS file -->
+    <link rel="stylesheet" href="{% static 'cursor.css' %}"> <!-- Link to your CSS file -->
 </head>
+
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'profile' %}">Profile</a></li>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div class="_3d-pixel-cursor__arrow">
+        <header>
+            <div class="logo">
+                Peanuts
+                <img class="logo_img" width="70px" src="{% static 'assets/peanut.png' %}" alt="">
+            </div>
 
-    <main>
-        <h1>Welcome, {{ user.username }}!</h1>
+            <nav>
+                <ul class="main_nav">
+                    <li><a href="{% url 'home' %}" class="_3d-pixel-cursor__pointer">Home</a></li>
+                    <li><a href="{% url 'profile' %}" class="_3d-pixel-cursor__pointer">Profile</a></li>
+                    <li><a href="{% url 'logout' %}" class="_3d-pixel-cursor__pointer">Logout</a></li>
+                </ul>
+            </nav>
+            <nav>
+                <ul>
+                    {% if user.is_authenticated %}
+                    <!-- Logout Form -->
+                    <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="sign-up"
+                            style="background:none;border:none;color:#ffffff;cursor:pointer;">Logout</button>
+                    </form>
+                    </li>
+                    {% else %}
+                    <li><a class="sign-up _3d-pixel-cursor__pointer" href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </header>
 
-        <section>
-            <h2>Profile Details</h2>
-            <p><strong>Username:</strong> {{ user.username }}</p>
-            <p><strong>Email:</strong> {{ user.email }}</p>
-            <p><strong>User Type:</strong> {{ user.user_type }}</p> <!-- Display user type -->
-        </section>
+        <main >
+            <h1>Welcome, {{ user.username }}!</h1>
 
-        <section>
-            <h2>Actions</h2>
-            <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
-            <!-- Assuming you have an 'edit_profile' view to handle profile editing -->
-        </section>
-    </main>
+            <section class="upcoming-events">
+                <h2>Profile Details</h2>
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>User Type:</strong> {{ user.user_type }}</p> <!-- Display user type -->
+            </section>
+
+            <section>
+                <h2>Actions</h2>
+                <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+                <!-- Assuming you have an 'edit_profile' view to handle profile editing -->
+            </section>
+        </main>
+    </div>
 </body>
+
 </html>
 
 
 
-{% comment %} <!DOCTYPE html>
+{% comment %}
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Link to your CSS file -->
+    <link rel="stylesheet" href="{% static 'index.css' %}"> <!-- Link to your CSS file -->
+    <link rel="stylesheet" href="{% static 'cursor.css' %}"> <!-- Link to your CSS file -->
 </head>
+
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'profile' %}">Profile</a></li>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div class="_3d-pixel-cursor__arrow">
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                </ul>
+            </nav>
+        </header>
 
-    <main>
-        <h1>Welcome, {{ user.username }}!</h1>
+        <main>
+            <h1>Welcome, {{ user.username }}!</h1>
 
-        <section>
-            <h2>Profile Details</h2>
-            <p><strong>Username:</strong> {{ user.username }}</p>
-            <p><strong>Email:</strong> {{ user.email }}</p>
-            <!-- Add more profile details here if needed -->
-        </section>
+            <section>
+                <h2>Profile Details</h2>
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <!-- Add more profile details here if needed -->
+            </section>
 
-        <section>
-            <h2>Actions</h2>
-            <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
-            <!-- Assuming you have an 'edit_profile' view to handle profile editing -->
-        </section>
-    </main>
+            <section>
+                <h2>Actions</h2>
+                <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+                <!-- Assuming you have an 'edit_profile' view to handle profile editing -->
+            </section>
+        </main>
+    </div>
 </body>
+
 </html> {% endcomment %}
