@@ -9,6 +9,13 @@
     <link rel="stylesheet" href="{% static 'index.css' %}"> <!-- Link to your CSS file -->
     <link rel="stylesheet" href="{% static 'community.css' %}"> <!-- Link to your CSS file -->
     <link rel="stylesheet" href="{% static 'cursor.css' %}"> <!-- Link to your CSS file -->
+    <style>
+        .redirecting{
+            color: #ffffff;
+            text-decoration: none;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+    </style>
 </head>
 
 <body>
@@ -135,7 +142,7 @@
                         </div>
                         {% endif %}
                         <div class="feed-section">
-                            <a href="{% url 'community_feed' %}">Go to Feed Section</a>
+                            <a href="{% url 'community_feed' %}" class="redirecting">Go to Feed Section</a>
                         </div>
 
                         <!-- Display Posted Jobs -->

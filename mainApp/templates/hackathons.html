@@ -9,6 +9,32 @@
     <link rel="stylesheet" href="{% static 'index.css' %}"> <!-- Link to your CSS file -->
     <link rel="stylesheet" href="{% static 'community.css' %}"> <!-- Link to your CSS file -->
     <link rel="stylesheet" href="{% static 'cursor.css' %}"> <!-- Link to your CSS file -->
+    <style>
+        .hacka{
+            font-family:Arial, Helvetica, sans-serif !important;
+            color: #ffffff;
+        }
+        .future{
+            font-family:Arial, Helvetica, sans-serif;
+            padding-bottom: 8px;
+            color: #ffdf00;
+        }
+        .content{
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 5px;
+        }
+        .hackathon-container{
+            background: #282828;
+            padding: 12px;
+            border: 1px solid #ffdf00 ;
+            border-radius: 12px;
+            transition: 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .hackathon-container:hover{
+            background-color: #af9b0051;
+        }
+    </style>
 </head>
 
 <body>
@@ -80,14 +106,22 @@
                             <div class="hackathons-list">
                                 {% for hackathon in hackathons %}
                                     <div class="hackathon">
-                                        <h3>{{ hackathon.name }}</h3>
+                                        <h3 class="hacka">{{ hackathon.name }}</h3>
                                         <p>{{ hackathon.description }}</p>
                                     </div>
                                 {% endfor %}
                             </div>
                         </section>
+                        <div class="hackathon-container">
+                            <h3 class="future">YOUTH4FUTURE</h3>
+                            <div class="content">
+                                Welcome to our 10-day Hybrid Hackathon, an exciting event dedicated to fostering innovation and sustainability! 
+                                 dynamic and inspiring environment.
+                            </div>
+                        </div>
                     </div>
                 </div>
+               
             </main>
         </div>
     </div>
