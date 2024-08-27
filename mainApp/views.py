@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpRequest, JsonResponse
+from django.http import HttpResponse, HttpRequest
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
@@ -9,11 +9,12 @@ from mainApp.forms import*
 from django.contrib import messages
 from django.http import JsonResponse
 from .models import Player
+from .models import Question
+import subprocess
+import os
+import tempfile
+import json
 
-# Create your views here.
-
-# def login(request):
-#     return render(request, 'login.html')
 
 @login_required
 def home(request):
@@ -83,16 +84,44 @@ def register(request):
 
 @login_required
 def community_page(request):
+    groups = Group.objects.all()
+    # return render(request, 'community_page.html', {'groups': groups})
     # Fetch all jobs and achievements to display
     jobs = Job.objects.all()
     achievements = Achievement.objects.all()
 
     context = {
+        'groups': groups,
         'jobs': jobs,
         'achievements': achievements,
     }
 
     return render(request, 'community_page.html', context)
+
+@login_required
+def jobs(request):
+    jobs = Job.objects.all()
+    context = {
+        'jobs': jobs
+    }
+
+    return render(request, 'jobs.html', context)
+
+@login_required
+def groups(request):
+    groups = Group.objects.all()
+    context = {
+        'groups': groups
+    }
+    return render(request, 'groups.html', context)
+
+@login_required
+def frandz(request):
+    return render(request, 'frandz.html')
+
+@login_required
+def hackathons(request):
+    return render(request, 'hackathons.html')
 
 @login_required
 def post_job(request):
@@ -139,6 +168,49 @@ def thank_you(request):
     return render(request, 'thank_you.html')
 
 
+# def community_feed(request):
+#     if request.method == 'POST':
+#         form = FeedPostForm(request.POST)
+#         if form.is_valid():
+#             feed_post = form.save(commit=False)
+#             if isinstance(request.user, User):
+#                 feed_post.user = request.user
+#             else:
+#                 return HttpResponse("User is not authenticated", status=400)
+#             feed_post.save()
+#             return redirect('community_feed')
+#     else:
+#         form = FeedPostForm()
+
+#     posts = FeedPost.objects.all().order_by('-timestamp')
+#     context = {
+#         'form': form,
+#         'posts': posts,
+#     }
+#     return render(request, 'community_feed.html', context)
+
+@login_required
+def community_feed(request):
+    # groups = Group.objects.all()
+    # jobs = Job.objects.all()
+    achievements = Achievement.objects.all()
+
+    context = {
+        # 'groups': groups,
+        # 'jobs': jobs,
+        'achievements': achievements,
+    }
+
+    return render(request, 'community_feed.html', context)
+
+
+
+
+@login_required
+def aboutus(request):
+    return render(request, 'aboutus.html')
+
+
 
 
 @login_required
@@ -155,42 +227,37 @@ def start_match(request):
         # Fetch the player's rank
         player_rank = player.rank
 
-        # Find an available room that doesn't have the same rank player
-        room = Room.objects.filter(
-            is_occupied=False,
-          
-        ).first()
-
-        print(room)
+        # Find an available room that isn't occupied and matches the player's rank
+        room = Room.objects.filter(is_occupied=False).first()
 
         if not room:
-            
             # Create a new room if no available room is found
             room = Room.objects.create(name=f"Room-{Room.objects.count() + 1}")
             print("New Room created :)", room.id)
-            # Assign player to room
-            room.save()
-        
+
+        # Assign player to room
         room.current_players += 1
         player.room = room
         player.is_in_queue = True
         player.save()
         room.save()
-        print(f"Player {player.username} joined room {room.id}")
-        print(room.name, room.current_players, room.max_capacity)
 
-        
-        # Mark room as occupied if it's full
+        # Check if room is full and mark it as occupied
         if room.current_players >= room.max_capacity:
             room.is_occupied = True
             room.save()
-        print(room.name, room.is_occupied)
+
+        # Get opponent player information (if available)
+        opponent = Player.objects.filter(room=room).exclude(user=user).first()
 
         return JsonResponse({
             'status': 'success',
             'room_id': room.id,
-            'room_name': room.name
+            'room_name': room.name,
+            'opponent_username': opponent.username if opponent else None,
+            'player_username': player.username
         })
+
     
 
 @csrf_exempt
@@ -200,9 +267,12 @@ def check_room_status(request):
         player = Player.objects.get(user=user)
 
         if player.room and player.room.current_players >= 2:
+            opponent = Player.objects.filter(room=player.room).exclude(user=user).first()
             return JsonResponse({
+                'player_username': player.username,
                 'status': 'ready',
-                'redirect_url': f'/question-page/?room_id={player.room.id}'
+                'redirect_url': f'/question-page/?room_id={player.room.id}',
+                'opponent_username': opponent.username if opponent else None,
             })
         else:
             return JsonResponse({'status': 'waiting'})
@@ -228,6 +298,54 @@ def question_page(request):
         'player': player
     }
     return render(request, 'game/question_page.html', context)
+# views.py
+def get_question(request, question_id):
+    questions = {
+     "easy": [
+            {
+                "title": "Two Sum",
+                "description": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.\nYou can return the answer in any order.",
+                "difficulty": "Easy",
+                "examples": [
+                    "Input: nums = [2,7,11,15], target = 9\nOutput: [0,1]\nExplanation: Because nums[0] + nums[1] == 9, we return [0, 1].",
+                    "Input: nums = [3,2,4], target = 6\nOutput: [1,2]",
+                    "Input: nums = [3,3], target = 6\nOutput: [0,1]"
+                ],
+                "time_limit": 20 * 60  # 20 minutes
+            }
+        ],
+        "medium": [
+            {
+                "title": "Add Two Numbers",
+                "description": "You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.\nYou may assume the two numbers do not contain any leading zero, except the number 0 itself.",
+                "difficulty": "Medium",
+                "examples": [
+                    "Input: l1 = [2,4,3], l2 = [5,6,4]\nOutput: [7,0,8]\nExplanation: 342 + 465 = 807."
+                ],
+                "time_limit": 40 * 60  # 40 minutes
+            }
+        ],
+    "hard": [
+        {
+            "title": "Median of Two Sorted Arrays",
+            "description": "Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.",
+            "difficulty": "Hard",
+            "examples": [
+                "Input: nums1 = [1,3], nums2 = [2]\nOutput: 2.00000\nExplanation: merged array = [1,2,3] and median is 2."
+            ],
+            "time_limit": 60 * 60  # 60 minutes
+        }
+       
+    ]
+}
+
+
+    question = questions.get(question_id, None)
+    if question:
+        return JsonResponse(question)
+    else:
+        return JsonResponse({'error': 'Question not found'}, status=404)
+
 
 @csrf_exempt
 def submit_answer(request):
@@ -324,7 +442,84 @@ def get_previous_rank(current_rank):
             return ranks[idx - 1]
     return current_rank
 
+@csrf_exempt
+def compile_code(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        code = data.get('code')
+        lang = data.get('lang')
+        input_data = data.get('input', '')
 
+        if lang == 'python':
+            file_extension = '.py'
+            command = ['python3']
+        elif lang == 'javascript':
+            file_extension = '.js'
+            command = ['node']
+        elif lang == 'java':
+            file_extension = '.java'
+            command = ['javac']
+        elif lang == 'cpp':
+            file_extension = '.cpp'
+            command = ['g++', '-o', 'output']
+        else:
+            return JsonResponse({'output': 'Unsupported language'}, status=400)
+
+        with tempfile.NamedTemporaryFile(suffix=file_extension, delete=False) as source_file:
+            source_file.write(code.encode('utf-8'))
+            source_file_path = source_file.name
+
+        try:
+            if lang == 'cpp':
+                compile_process = subprocess.run(command + [source_file_path], capture_output=True, text=True)
+                if compile_process.returncode != 0:
+                    return JsonResponse({'output': compile_process.stderr}, status=400)
+                execute_process = subprocess.run(['./output'], input=input_data, capture_output=True, text=True)
+            elif lang == 'java':
+                compile_process = subprocess.run(command + [source_file_path], capture_output=True, text=True)
+                if compile_process.returncode != 0:
+                    return JsonResponse({'output': compile_process.stderr}, status=400)
+                execute_process = subprocess.run(['java', source_file_path.replace(file_extension, '')], input=input_data, capture_output=True, text=True)
+            else:
+                execute_process = subprocess.run(command + [source_file_path], input=input_data, capture_output=True, text=True)
+
+            output = execute_process.stdout
+            error = execute_process.stderr
+            result = output if output else error
+            return JsonResponse({'output': result.strip()})
+
+        finally:
+            os.remove(source_file_path)
+            if lang == 'cpp':
+                os.remove('output')
+            elif lang == 'java':
+                os.remove(source_file_path.replace(file_extension, '.class'))
+
+    return JsonResponse({'output': 'Invalid request method'}, status=405)
+
+
+def submit_code(request):
+    if request.method == "POST":
+        question_id = request.POST.get('question_id')
+        user_code = request.POST.get('user_code')
+
+        question = get_object_or_404(Question, pk=question_id)
+
+        # Assuming you're compiling the code using subprocess
+        # This is just an example for Python code, adapt as necessary for other languages
+        try:
+            # Execute the user's code
+            exec_output = subprocess.check_output(['python3', '-c', user_code], stderr=subprocess.STDOUT).decode('utf-8')
+        except subprocess.CalledProcessError as e:
+            exec_output = e.output.decode('utf-8')
+
+        # Compare output with the expected output
+        if exec_output.strip() == question.expected_output.strip():
+            return JsonResponse({'status': 'success', 'message': 'Success, answer is accepted!'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Not matched'})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'})
 # New attribute bnanaya hai is over jo match start hone pe false 
 # jabhi koi banda submit karega, fir code check karega ki match over hain ya nhi. 
 # If true hain, apne aap hargaya and kuch return kardega. 

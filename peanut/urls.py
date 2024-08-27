@@ -16,9 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from django.contrib.auth import views  as auth_views
+from django.contrib.auth import views  as auth_view 
+from mainApp.views import get_question
 from mainApp import views
-
+from mainApp.views import compile_code
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -37,6 +40,18 @@ urlpatterns = [
     path('accounts/community_page/', views.community_page, name='community_page'),
     path('thank_you/', views.thank_you, name='thank_you'),
     path('accounts/store/', views.store, name='store'),
+    path('accounts/aboutus/', views.aboutus, name='aboutus'),
     path('submit-answer/', views.submit_answer, name='submit_answer'),
-    
+    path('get_question/<int:question_id>/', get_question, name='get_question'),
+    path('compile/', compile_code, name='compile_code'),
+    path('accounts/community/feed/', views.community_feed, name='community_feed'),
+    path('accounts/community/jobs/', views.jobs, name='jobs'),
+    path('accounts/community/groups/', views.groups, name='groups'),
+    path('accounts/community/frandz/', views.frandz, name='frandz'),
+    path('accounts/community/hackathons/', views.hackathons, name='hackathons'),
+
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

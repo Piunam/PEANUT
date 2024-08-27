@@ -33,4 +33,8 @@ class EditProfileForm(forms.ModelForm):
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control' 
 
+class FeedPostForm(forms.ModelForm):
+    class Meta:
+        model = FeedPost
+        fields = ['content']
 

@@ -5,6 +5,45 @@
 <link rel="stylesheet" href="{% static 'cloud.css' %}">
 <link rel="stylesheet" href="{% static 'cursor.css' %}">
 <script src="{% static 'js/matchmaking.js' %}"></script>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&display=swap');
+
+    .popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .popup-content {
+        background-color: #16002C;
+        border: 2px solid #ffdf00;
+        padding: 20px;
+        color: #ffdf00;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 28px;
+        font-family: "Handjet", sans-serif;
+    }
+    .popup-content-Vs{
+        background-color: #16002C;
+        border: 2px solid #ffdf00;
+        padding: 20px;
+        color: #ffdf00;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 58px;
+        width: 600px;
+        height: 500px;
+        font-family: "Handjet", sans-serif;
+    }
+</style>
 <div id="background-wrap">
     <div class="x1">
         <div class="cloud"></div>
@@ -39,14 +78,15 @@
             <ul class="main_nav">
                 <li><a href="{% url 'home' %}" class="_3d-pixel-cursor__pointer">Home</a></li>
                 <li><a href="{% url 'community_page' %}" class="_3d-pixel-cursor__pointer">Community</a></li>
-                <li><a href="{% url 'community_page' %}" class="_3d-pixel-cursor__pointer">Store</a></li>
+                <li><a href="{% url 'store' %}" class="_3d-pixel-cursor__pointer">Store</a></li>
             </ul>
         </nav>
         <nav>
             <ul>
                 {% if user.is_authenticated %}
                 <li><a class="_3d-pixel-cursor__pointer" href="{% url 'profile' %}">
-                        <img src="{% static 'assets/profile.png' %}" class="profile_img"  alt="">
+                        <img src="{% static 'assets/profile.png' %}" class="profile_img" alt="">
+                        <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'assets/default.jpg' %}{% endif %}" class="profile_img" alt="Profile Picture">
                     </a></li>
                 <li>
                     <!-- Logout Form -->
@@ -74,21 +114,54 @@
         </section>
 
         <section class="buttons-section">
-            <button class="scoreboard-button _3d-pixel-cursor__pointer">About Us</button>
+            <button class="scoreboard-button _3d-pixel-cursor__pointer"> <a href="{% url 'aboutus' %}">About Us</a></button>
             <button class="scoreboard-button _3d-pixel-cursor__pointer">Scoreboard</button>
             <button class="quick-play-button _3d-pixel-cursor__pointer">Quick Play</button>
+            <div id="waiting-popup" class="popup" style="display: none;">
+                <div class="popup-content">
+                    <p id="status-text">Waiting for player...</p>
+                </div>
+            </div>
+
+            <div id="match-found-popup" class="popup" style="display: none;">
+                <div class="popup-content">
+
+                    <p>Match Found!</p>
+                </div>
+            </div>
+            <div id="vs-screen-popup" class="popup" style="display: none;">
+                <div class="popup-content-Vs">
+                    <p id="player1-name">Player 1</p>
+                    <h3>Vs</h3>
+                    <p id="player2-name">Player 2</p>
+                </div>
+            </div>
+
             <button id="start-match-button" class="online-match-button _3d-pixel-cursor__pointer">Online Match</button>
             <p id="status-text"></p>
         </section>
 
         <section class="main-content">
             <div class="upcoming-events">
-                <h2>Upcoming Events:</h2>
-                <p>@Coding Group</p>
-                <div class="event-description">
-                    <p>The curious cat jumped over the tall fence, chasing after the fluttering butterfly...</p>
-                    <p>The ancient tree stood tall in the forest, its gnarled branches reaching out like arms...</p>
-                </div>
+                   <!-- Section for Hirers to Post Jobs -->
+                   {% if user.user_type == 'hiree' %}
+                   <div>
+                       <h2>Post Your Achievement</h2>
+                       <form method="POST" action="{% url 'post_achievement' %}">
+                           {% csrf_token %}
+                           <div>
+                               <label for="achievement_title">Achievement Title:</label>
+                               <input type="text" id="achievement_title" name="achievement_title" required>
+                           </div>
+                           <div>
+                               <label for="achievement_description">Achievement Description:</label>
+                               <textarea id="achievement_description" name="achievement_description"
+                                   required></textarea>
+                           </div>
+                           <button type="submit">Post Achievement</button>
+                       </form>
+                   </div>
+                   {% endif %}
             </div>
 
             <div class="player-stats">

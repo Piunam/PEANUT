@@ -1,18 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
     const startMatchButton = document.getElementById('start-match-button');
     const form = document.getElementById('question-form');
-    const statusText = document.getElementById('status-text');
+    const waitingPopup = document.getElementById('waiting-popup');
+    const matchFoundPopup = document.getElementById('match-found-popup');
+    const vsScreenPopup = document.getElementById('vs-screen-popup');
+    const player1Name = document.getElementById('player1-name');
+    const player2Name = document.getElementById('player2-name');
 
     if (startMatchButton) {
         startMatchButton.addEventListener('click', function () {
-            console.log("Button has been clicked!")
-            // Show "Waiting for player..." text immediately after clicking "Start Match"
-            if (!statusText) {
-                statusText = document.createElement('p');
-                statusText.id = 'status-text';
-                document.body.appendChild(statusText);
-            }
-            statusText.textContent = 'Waiting for player...';
+            console.log("Button has been clicked!");
+
+            // Show "Waiting for player..." popup
+            waitingPopup.style.display = 'flex';
 
             fetch('/start-match/', {
                 method: 'POST',
@@ -37,11 +37,30 @@ document.addEventListener('DOMContentLoaded', function () {
                         .then(response => response.json())
                         .then(statusData => {
                             if (statusData.status === 'ready') {
+                                console.log(statusData)
                                 clearInterval(checkRoomStatus);
-                                statusText.textContent = 'Match Found!';
+
+                                // Hide "Waiting for player..." popup
+                                waitingPopup.style.display = 'none';
+
+                                // Show "Match Found!" popup
+                                matchFoundPopup.style.display = 'flex';
+
                                 setTimeout(() => {
-                                    window.location.href = statusData.redirect_url;
-                                }, 2000); // Wait for 2 seconds before redirecting
+                                    matchFoundPopup.style.display = 'none';
+
+                                    // Set player names for "Vs" screen
+                                    // If statusData contains player_username and opponent_username, use them. Else, use them from data
+                                    player1Name.textContent = statusData.player_username || data.player_username;
+                                    player2Name.textContent = statusData.opponent_username || data.opponent_username;
+
+                                    // Show "Vs" screen popup
+                                    vsScreenPopup.style.display = 'flex';
+
+                                    setTimeout(() => {
+                                        window.location.href = statusData.redirect_url;
+                                    }, 3000); // Wait for 3 seconds before redirecting
+                                }, 2000); // Wait for 2 seconds before showing "Vs" screen
                             }
                         });
                     }, 5000); // Check every 5 seconds
@@ -49,10 +68,10 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
-    
+
     if (form) {
         form.addEventListener('submit', function (event) {
-            console.log("This is 2nd match")
+            console.log("This is 2nd match");
             event.preventDefault();  // Prevent default form submission
 
             const formData = new FormData(form);

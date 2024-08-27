@@ -17,7 +17,6 @@ header {
     padding: 10px 50px;
     background-color: #16002C;
 }
-
 .logo {
     display: flex;
     font-family: "Handjet", sans-serif;
@@ -160,8 +159,11 @@ nav ul li a:hover{
 .character {
     width: 100px;
     height: 100px;
-    background-image: url('your-character-sprite.png');
     background-size: cover;
+}
+.question{
+    font-weight: 800;
+    font-size: 40px;
 }
 
 h2 {

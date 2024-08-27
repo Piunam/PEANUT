@@ -35,6 +35,13 @@ class Room(models.Model):
         # Allow if both ranks are within the same rank group (Bronze, Silver, etc.)
         return abs(room_rank_index - player_rank_index) <= 3
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='profile_pics', default='default.jpg')
+
+    def __str__(self):
+        return f'{self.user.username} Profile'
+
 
 class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -81,5 +88,31 @@ class Achievement(models.Model):
 
     def str(self):
         return self.title
-    
+
+class Question(models.Model):
+    title = models.CharField(max_length=255)
+    difficulty = models.CharField(max_length=50)
+    content = models.TextField()
+    expected_output = models.TextField()
+
+    def __str__(self):
+        return self.title
+
+
+class Group(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+class FeedPost(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user.username}: {self.content[:50]}'
+
 

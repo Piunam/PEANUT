@@ -55,6 +55,11 @@
             <section>
                 <h2>Actions</h2>
                 <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+                <li><a class="_3d-pixel-cursor__pointer" href="{% url 'profile' %}">
+                    <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'assets/default.jpg' %}{% endif %}" 
+                         class="profile_img" alt="Profile Picture">
+                </a></li>
+                
                 <!-- Assuming you have an 'edit_profile' view to handle profile editing -->
             </section>
         </main>
@@ -65,48 +70,3 @@
 
 
 
-{% comment %}
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'index.css' %}"> <!-- Link to your CSS file -->
-    <link rel="stylesheet" href="{% static 'cursor.css' %}"> <!-- Link to your CSS file -->
-</head>
-
-<body>
-    <div class="_3d-pixel-cursor__arrow">
-        <header>
-            <nav>
-                <ul>
-                    <li><a href="{% url 'home' %}">Home</a></li>
-                    <li><a href="{% url 'profile' %}">Profile</a></li>
-                    <li><a href="{% url 'logout' %}">Logout</a></li>
-                </ul>
-            </nav>
-        </header>
-
-        <main>
-            <h1>Welcome, {{ user.username }}!</h1>
-
-            <section>
-                <h2>Profile Details</h2>
-                <p><strong>Username:</strong> {{ user.username }}</p>
-                <p><strong>Email:</strong> {{ user.email }}</p>
-                <!-- Add more profile details here if needed -->
-            </section>
-
-            <section>
-                <h2>Actions</h2>
-                <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
-                <!-- Assuming you have an 'edit_profile' view to handle profile editing -->
-            </section>
-        </main>
-    </div>
-</body>
-
-</html> {% endcomment %}

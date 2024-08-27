@@ -1,181 +1,3 @@
-{% comment %}
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Community Page</title>
-</head>
-
-<body>
-    <h1>Welcome to the Community Page</h1>
-
-    <!-- Section for Hirers to Post Jobs -->
-    {% if user.user_type == 'hirer' %}
-    <div>
-        <h2>Post a Job</h2>
-        <form method="POST" action="{% url 'post_job' %}">
-            {% csrf_token %}
-            <div>
-                <label for="job_title">Job Title:</label>
-                <input type="text" id="job_title" name="job_title" required>
-            </div>
-            <div>
-                <label for="job_description">Job Description:</label>
-                <textarea id="job_description" name="job_description" required></textarea>
-            </div>
-            <div>
-                <label for="job_requirements">Job Requirements:</label>
-                <textarea id="job_requirements" name="job_requirements" required></textarea>
-            </div>
-            <button type="submit">Post Job</button>
-        </form>
-    </div>
-    {% endif %}
-
-    <!-- Section for Hirees to Post Achievements -->
-    {% if user.user_type == 'hiree' %}
-    <div>
-        <h2>Post Your Achievement</h2>
-        <form method="POST" action="{% url 'post_achievement' %}">
-            {% csrf_token %}
-            <div>
-                <label for="achievement_title">Achievement Title:</label>
-                <input type="text" id="achievement_title" name="achievement_title" required>
-            </div>
-            <div>
-                <label for="achievement_description">Achievement Description:</label>
-                <textarea id="achievement_description" name="achievement_description" required></textarea>
-            </div>
-            <button type="submit">Post Achievement</button>
-        </form>
-    </div>
-    {% endif %}
-
-    <!-- Display Posted Jobs -->
-    <div>
-        <h2>Available Jobs</h2>
-        <ul>
-            {% for job in jobs %}
-            <li>
-                <h3>{{ job.title }}</h3>
-                <p>{{ job.description }}</p>
-                <p><strong>Requirements:</strong> {{ job.requirements }}</p>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-
-    <!-- Display Posted Achievements -->
-    <div>
-        <h2>Hiree Achievements</h2>
-        <ul>
-            {% for achievement in achievements %}
-            <li>
-                <h3>{{ achievement.title }}</h3>
-                <p>{{ achievement.description }}</p>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-</body>
-
-</html> {% endcomment %}
-
-{% comment %}
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Community Page</title>
-</head>
-
-<body>
-    <h1>Welcome to the Community Page</h1>
-
-    <!-- Redirect Button for Hirers to Post Jobs -->
-    {% if user.user_type == 'hirer' %}
-    <div>
-        <a href="{% url 'post_job' %}" class="btn btn-primary">Post a New Job</a>
-    </div>
-    {% endif %}
-
-    <!-- Section for Hirers to Post Jobs -->
-    {% if user.user_type == 'hirer' %}
-    <div>
-        <h2>Post a Job</h2>
-        <form method="POST" action="{% url 'post_job' %}">
-            {% csrf_token %}
-            <div>
-                <label for="job_title">Job Title:</label>
-                <input type="text" id="job_title" name="job_title" required>
-            </div>
-            <div>
-                <label for="job_description">Job Description:</label>
-                <textarea id="job_description" name="job_description" required></textarea>
-            </div>
-            <div>
-                <label for="job_requirements">Job Requirements:</label>
-                <textarea id="job_requirements" name="job_requirements" required></textarea>
-            </div>
-            <button type="submit">Post Job</button>
-        </form>
-    </div>
-    {% endif %}
-
-    <!-- Section for Hirees to Post Achievements -->
-    {% if user.user_type == 'hiree' %}
-    <div>
-        <h2>Post Your Achievement</h2>
-        <form method="POST" action="{% url 'post_achievement' %}">
-            {% csrf_token %}
-            <div>
-                <label for="achievement_title">Achievement Title:</label>
-                <input type="text" id="achievement_title" name="achievement_title" required>
-            </div>
-            <div>
-                <label for="achievement_description">Achievement Description:</label>
-                <textarea id="achievement_description" name="achievement_description" required></textarea>
-            </div>
-            <button type="submit">Post Achievement</button>
-        </form>
-    </div>
-    {% endif %}
-
-    <!-- Display Posted Jobs -->
-    <div>
-        <h2>Available Jobs</h2>
-        <ul>
-            {% for job in jobs %}
-            <li>
-                <h3>{{ job.title }}</h3>
-                <p>{{ job.description }}</p>
-                <p><strong>Requirements:</strong> {{ job.requirements }}</p>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-
-    <!-- Display Posted Achievements -->
-    <div>
-        <h2>Hiree Achievements</h2>
-        <ul>
-            {% for achievement in achievements %}
-            <li>
-                <h3>{{ achievement.title }}</h3>
-                <p>{{ achievement.description }}</p>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-</body>
-
-</html> {% endcomment %}
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -247,11 +69,11 @@
         <div class="main">
             <div class="sidebar">
                 <ul>
-                    <li><a href="#" class="active _3d-pixel-cursor__pointer"><i class="lni lni-home"></i><span>FEED</span></a></li>
-                    <li><a href="#" class=" _3d-pixel-cursor__pointer"><i class="lni lni-text-format"></i><span>GROUPS</span></a></li>
-                    <li><a href="#" class=" _3d-pixel-cursor__pointer"><i class="lni lni-bar-chart"></i><span>FRANDZ</span></a></li>
-                    <li><a href="#" class=" _3d-pixel-cursor__pointer"><i class="lni lni-grid"></i><span>HACKATHONS</span></a></li>
-                    <li><a href="#" class=" _3d-pixel-cursor__pointer"><i class="lni lni-bullhorn"></i><span>JOBS</span></a></li>
+                    <li><a href="{% url 'community_feed' %}" class="active _3d-pixel-cursor__pointer"><i class="lni lni-home"></i><span>FEED</span></a></li>
+                    <li><a href="{% url 'groups' %}" class=" _3d-pixel-cursor__pointer"><i class="lni lni-text-format"></i><span>GROUPS</span></a></li>
+                    <li><a href="{% url 'frandz' %}" class=" _3d-pixel-cursor__pointer"><i class="lni lni-bar-chart"></i><span>FRANDZ</span></a></li>
+                    <li><a href="{% url 'hackathons' %}" class=" _3d-pixel-cursor__pointer"><i class="lni lni-grid"></i><span>HACKATHONS</span></a></li>
+                    <li><a href="{% url 'jobs' %}" class=" _3d-pixel-cursor__pointer"><i class="lni lni-bullhorn"></i><span>JOBS</span></a></li>
                     {% comment %} {% if user.user_type == 'hirer' %} {% endcomment %}
                     <li><a class="_3d-pixel-cursor__pointer post_buttons" href="{% url 'post_job' %}"><i class="lni "></i><span>Post
                                 Job</span></a></li>
@@ -312,6 +134,9 @@
                             </form>
                         </div>
                         {% endif %}
+                        <div class="feed-section">
+                            <a href="{% url 'community_feed' %}">Go to Feed Section</a>
+                        </div>
 
                         <!-- Display Posted Jobs -->
                         <div class="Available_Jobs">
@@ -369,6 +194,20 @@
                         </div>
                     </div>
                 </div>
+            
+                <section id="groups">
+                    <h2>Groups</h2>
+                    <div class="groups-list">
+                        {% for group in groups %}
+                            <div class="group">
+                                <h3>{{ group.name }}</h3>
+                                <p>{{ group.description }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </section>
+        
+            
             </main>
         
     </div>
