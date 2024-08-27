@@ -9,6 +9,32 @@
     <link rel="stylesheet" href="{% static 'index.css' %}"> <!-- Link to your CSS file -->
     <link rel="stylesheet" href="{% static 'community.css' %}"> <!-- Link to your CSS file -->
     <link rel="stylesheet" href="{% static 'cursor.css' %}"> <!-- Link to your CSS file -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&display=swap');
+        .group{
+            padding: 10px;
+            background-color: black;
+            margin: 5px;
+            margin-bottom: 19px;
+            border-radius: 12px;
+            border:1px solid #ffdf00;
+            transition: 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .group>h3{
+            color: #ffdf00;
+            font-family: "Handjet", sans-serif;
+            font-size: 25px;
+            padding: 5px;
+        }
+        .group>p{
+            font-family:Arial, Helvetica, sans-serif;
+            padding: 5px;
+        }
+        .group:hover{
+            background-color: #ffdd0043;
+        }
+    </style>
 </head>
 
 <body>
