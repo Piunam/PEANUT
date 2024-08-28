@@ -13,6 +13,11 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'index.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/loader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&display=swap');
 
@@ -157,7 +162,10 @@
                 <!-- Question will be loaded here -->
             </div>
             <input type="hidden" id="question-id" value="{{ question.id }}">
-            <button id="submit-button" style="display: none;">Submit</button>
+            <button id="submit-button"
+                style="padding: 10px; background-color: #ffdf00; border-radius: 10px;">Submit</button>
+
+
         </section>
         <section class="editor-section">
             <div class="d-flex justify-content-between searchbar">
@@ -175,6 +183,27 @@
                 <pre id="output"></pre>
             </div>
         </section>
+
+        <!-- Modal HTML -->
+        <div class="modal fade" id="promotionModal" tabindex="-1" aria-labelledby="promotionModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="promotionModalLabel">Rank Promotion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Congratulations! You have been promoted to Bronze - 2.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </main>
 
     <script>
@@ -231,10 +260,23 @@
             ]
         };
 
+        document.getElementById('submit-button').addEventListener('click', function () {
+            fetch('/submit/', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'promoted') {
+                        window.location.href = '/promoted/';
+                    } else {
+                        window.location.href = '/demoted/';
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
         function getExpectedOutput(difficulty) {
             const question = questions[difficulty][0];
             const examples = question.examples;
-            return examples.map(example => example.output);
+            return ["[0, 1]"];
         }
 
         function loadQuestion(difficulty) {
@@ -311,7 +353,7 @@
                     .then(data => {
                         document.getElementById('output').textContent = data.output || 'Error occurred';
 
-                        const expectedOutput =  "[0, 1]"; // Replace with actual expected output
+                        const expectedOutput = "[0, 1]"; // Replace with actual expected output
                         if (data.output.trim() === expectedOutput.trim()) {
                             alert('Success');
                         } else {
@@ -328,7 +370,7 @@
         function submitCode() {
             let userCode = document.getElementById("code-editor").value;
             let questionId = document.getElementById("question-id").value;
-            let expectedOutputs = getExpectedOutput(questionId);
+            let expectedOutputs = getExpectedOutput({ difficulty: 'easy' }); // Update as needed
 
             fetch('/submit_code/', {
                 method: 'POST',
@@ -344,8 +386,13 @@
                 .then(response => response.json())
                 .then(data => {
                     let userOutput = data.output || 'Error occurred';
+                    console.log('User Output:', userOutput);
+                    console.log('Expected Outputs:', expectedOutputs);
+
                     if (expectedOutputs.includes(userOutput.trim())) {
-                        alert('Success');
+                        // Show the promotion modal on success
+                        var myModal = new bootstrap.Modal(document.getElementById('promotionModal'));
+                        myModal.show();
                     } else {
                         alert('Failed');
                     }
@@ -355,6 +402,10 @@
                     alert('Error occurred');
                 });
         }
+
+
+
+
     </script>
 
 </body>

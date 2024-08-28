@@ -49,6 +49,9 @@ urlpatterns = [
     path('accounts/community/groups/', views.groups, name='groups'),
     path('accounts/community/frandz/', views.frandz, name='frandz'),
     path('accounts/community/hackathons/', views.hackathons, name='hackathons'),
+    path('promoted/', views.promoted, name='promoted'),
+    path('demoted/', views.demoted, name='demoted'),
+    path('submit/', views.submit_view, name='submit'),
 
 ]
 
