@@ -1,32 +1,135 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us</title>
-    <link rel="stylesheet" href="Style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'index.css' %}">
+<link rel="stylesheet" href="{% static 'cloud.css' %}">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&display=swap');
 
-</head>
-<body>
-    <div class="about-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="about-img">
-                        <img src="https://w0.peakpx.com/wallpaper/759/459/HD-wallpaper-kiara-actress-advani-kaira.jpg" alt="">
-                    </div>
-                </div>
-                <div class="col-lg-6 col-lg-offset-1">
-                    <div class="about-text">
-                        <h2>About Us</h2>
-                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aspernatur cum magni labore suscipit quod fugiat architecto quam a iste nulla mollitia voluptas nobis odio voluptatibus soluta dolor, ad dolores, ea numquam cumque! Distinctio ad hic nulla repellendus autem delectus fuga expedita maiores ea cum reiciendis praesentium at, dolor officiis porro.</p>
-                        <a href="#">Learn More</a>
-                    </div>
-                </div>
+    .container-head {
+        display: flex;
+        justify-content: center;
+        font-family: "Handjet", sans-serif;
+        font-size: 40px;
+        color: #ffdf00;
+    }
+
+    .img {
+        border: 2px solid #ffdf00;
+        border-radius: 12px;
+    }
+
+    .content {
+        padding: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .para {
+        color: white;
+        padding: 20px;
+        font-family: Arial, Helvetica, sans-serif;
+        width: 40%;
+
+    }
+    .cont{
+        position: relative;
+        bottom: 100px;
+    }
+</style>
+
+<div class="_3d-pixel-cursor__arrow">
+
+    <header>
+        <div class="logo">
+            Peanuts
+            <img class="logo_img" width="70px" src="{% static 'assets/peanut.png' %}" alt="">
+        </div>
+
+        <nav>
+            <ul class="main_nav">
+                <li><a href="{% url 'home' %}" class="_3d-pixel-cursor__pointer">Home</a></li>
+                <li><a href="{% url 'community_page' %}" class="_3d-pixel-cursor__pointer">Community</a></li>
+                <li><a href="{% url 'store' %}" class="_3d-pixel-cursor__pointer">Store</a></li>
+            </ul>
+        </nav>
+        <nav>
+            <ul>
+                {% if user.is_authenticated %}
+                <li><a class="_3d-pixel-cursor__pointer" href="{% url 'profile' %}">
+                        <img src="{% static 'assets/profile.png' %}" class="profile_img" style="margin-top: 20px;" alt="">
+                        <!-- <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'assets/default.jpg' %}{% endif %}"
+                            class="profile_img" alt="Profile Picture"> -->
+                    </a></li>
+                <li>
+                    <!-- Logout Form -->
+                    <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="sign-up"
+                            style="background:none;border:none;color:#ffffff;cursor:pointer;">Logout</button>
+                    </form>
+                </li>
+                {% else %}
+                <li><a class="sign-up _3d-pixel-cursor__pointer" href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="container-head">
+            <h1>ABOUT US</h1>
+        </div>
+        <div class="cont">
+        <div class="content">
+            <div class="">
+                <img src="{% static 'assets/Home.png' %}" class="img" width="500px" alt="">
+            </div>
+            <div class="para">
+                <h2>Problem statement </h2>
+
+                <p>Traditional coding platforms fail to provide an engaging and interactive learning experience,
+                    resulting
+                    in disengagement, slow skill development, and limited opportunities for connection and career growth
+                    among developers.
+
+                    How can a platform be designed to offer a comprehensive, community-driven, and competitive
+                    environment
+                    that fosters immersive learning, skill mastery, and career advancement for developers of all levels?
+                </p>
+
+                <h2> Solution </h2>
+                <p>
+
+
+                    Peanut solves this by offering a comprehensive platform with competitive matchmaking, real-time
+                    coding challenges, and a dynamic community forum.
+
+                    Developers engage with peers, share knowledge, and learn from each other's experiences while
+                    competing to earn credits and showcase skills to potential employers.
+
+                    With Peanut, users can:
+
+                    - Compete in real-time coding challenges on one-on-one online matches
+                    - Find jobs and internships
+                    - Earn redeemable credits and badges
+                    - Connect with peers and potential employers
+                    - Share knowledge in the community forum
+                    - Showcase skills and build a reputation
+                    - Access career growth resources
+
+                    Peanut is the ultimate destination for developers to learn, grow, and succeed.
+
+                </p>
+
             </div>
         </div>
     </div>
-</body>
-</html>
+    </div>
+
+
+
+</div>
+
+
+{% endblock %}

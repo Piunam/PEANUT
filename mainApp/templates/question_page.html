@@ -67,6 +67,7 @@
             height: 40vh;
             border: 1px solid #ccc;
             background-color: rgb(0, 0, 0);
+
         }
 
         #run-code-button {
@@ -102,6 +103,7 @@
 
         .output-text {
             color: #ffdf00;
+
         }
 
         .form-select {
@@ -125,6 +127,7 @@
             width: 16%;
             font-weight: 800;
             font-family: "Handjet", sans-serif;
+            /* height: 40px; */
             border-radius: 13px;
             padding: 8px;
         }
@@ -134,6 +137,7 @@
             justify-content: space-between;
         }
     </style>
+    {% load static %}
 </head>
 
 <body>
@@ -143,12 +147,13 @@
             <img class="logo_img" width="70px" src="{% static 'assets/peanut.png' %}" alt="">
         </div>
         <nav>
-            <!-- Navigation links if any -->
+
         </nav>
     </header>
+    <!-- <div class="container"> -->
     <main class="main-content">
         <section class="question-section">
-            <div class="timer-section">
+            <div class=" timer-section">
                 <h2 class="question" id="question-title">Loading Question...</h2>
                 <div id="timer">Loading...</div>
             </div>
@@ -157,7 +162,7 @@
                 <!-- Question will be loaded here -->
             </div>
             <input type="hidden" id="question-id" value="{{ question.id }}">
-            <button id="submit-button" style="display: none;">Submit</button>
+
         </section>
         <section class="editor-section">
             <div class="d-flex justify-content-between searchbar">
@@ -167,16 +172,17 @@
                     <option value="java">Java</option>
                     <option value="cpp">C++</option>
                 </select>
+                <!-- <button >Run Code</button> -->
                 <button id="run-code-button" onclick="submitCode()">Run Code</button>
             </div>
             <div id="code-editor"></div>
             <div class="mt-2">
-                <label for="output" class="output-text">Output</label>
+                <label for="output" class="output-text ">Output</label>
                 <pre id="output"></pre>
             </div>
         </section>
     </main>
-
+    </div>
     <script>
         const questions = {
             "easy": [
@@ -231,21 +237,23 @@
             ]
         };
 
-        function getExpectedOutput(difficulty) {
-            const question = questions[difficulty][0];
+
+        // Function to generate the expected output based on the question
+        function getExpectedOutput(questionId) {
+            const question = questions[questionId.difficulty][0]; // Assume only one question per difficulty
             const examples = question.examples;
-            return examples.map(example => example.output);
+            const expectedOutputs = examples.map(example => example.output);
+            return expectedOutputs;
         }
 
+        // Load question and set up the environment
         function loadQuestion(difficulty) {
             const question = questions[difficulty][0];
             document.getElementById('question-title').innerText = question.title;
             document.getElementById('question-difficulty').innerText = `Difficulty: ${question.difficulty}`;
-            document.getElementById('question-content').innerHTML = `
-                <p>${question.description}</p>
-                <pre>${question.examples.map(example => example.input + "\n" + example.output).join('\n\n')}</pre>
-            `;
+            document.getElementById('question-content').innerHTML = `<p>${question.description}</p><pre>${question.examples.map(example => example.input + "\n" + example.output).join('\n\n')}</pre>`;
 
+            // Set the timer based on difficulty
             let timeLimit;
             switch (difficulty) {
                 case 'easy':
@@ -264,6 +272,7 @@
             startTimer(timeLimit);
         }
 
+        // Timer function
         function startTimer(duration) {
             const timerDisplay = document.getElementById('timer');
             let time = duration;
@@ -282,13 +291,17 @@
             }, 1000);
         }
 
+        // Load an easy question by default
         loadQuestion('easy');
 
         // Initialize Monaco editor
         require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs' } });
         require(['vs/editor/editor.main'], function () {
             var editor = monaco.editor.create(document.getElementById('code-editor'), {
-                value: '',
+                value: `function twoSum(nums, target) {
+    // Implement your solution here
+    return []; // Change this to your return statement
+}`,
                 language: 'javascript',
                 theme: 'vs-dark',
             });
@@ -311,8 +324,10 @@
                     .then(data => {
                         document.getElementById('output').textContent = data.output || 'Error occurred';
 
-                        const expectedOutput =  "[0, 1]"; // Replace with actual expected output
-                        if (data.output.trim() === expectedOutput.trim()) {
+                        const questionId = { difficulty: 'easy' }; // Replace with actual question ID
+                        const expectedOutputs = getExpectedOutput(questionId);
+
+                        if (expectedOutputs.includes(data.output.trim())) {
                             alert('Success');
                         } else {
                             alert('Failed');
@@ -355,6 +370,7 @@
                     alert('Error occurred');
                 });
         }
+
     </script>
 
 </body>
