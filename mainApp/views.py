@@ -226,6 +226,8 @@ def store(request):
 
 
 
+first_click = None
+
 @csrf_exempt
 def submit_view(request):
     global first_click
@@ -234,6 +236,8 @@ def submit_view(request):
         return JsonResponse({'status': 'promoted'})
     else:
         return JsonResponse({'status': 'demoted'})
+
+
 
 @csrf_exempt
 @login_required
@@ -487,6 +491,7 @@ def submit_code(request):
     return JsonResponse({'status': 'error', 'message': 'Invalid request'})
 
 
+
 @csrf_exempt
 def handle_match_result(request):
     if request.method == 'POST':
@@ -544,4 +549,78 @@ def get_previous_rank(current_rank):
             return ranks[idx - 1]
     return current_rank
 
+# Global variable to keep track of who clicked first
 first_click = None
+
+@csrf_exempt
+def submit_view(request):
+    global first_click
+    if first_click is None:
+        first_click = request.user
+        return JsonResponse({'status': 'promoted'})
+    else:
+        return JsonResponse({'status': 'demoted'})
+
+@csrf_exempt
+@login_required
+def quick_play(request):
+    if request.method == 'POST':
+        user = request.user
+        player, created = Player.objects.get_or_create(user=user)
+
+        # Fetch the player's rank
+        player_rank = player.rank
+
+        # Find an available room that isn't occupied
+        room = Room.objects.filter(is_occupied=False).first()
+
+        if not room:
+            # Create a new room if no available room is found
+            room = Room.objects.create(name=f"Room-{Room.objects.count() + 1}")
+            print("New Room created :)", room.id)
+
+        # Assign player to room
+        room.current_players += 1
+        player.room = room
+        player.is_in_queue = True
+        player.save()
+        room.save()
+
+        # Mark the room as occupied for quick play
+        room.is_occupied = True
+        room.save()
+
+        # For quick play, we don't need to wait for another player
+        # Treat it as a match against an AI or a solo match
+        opponent_username = "AI Opponent"  # Placeholder for the opponent
+
+        return JsonResponse({
+            'status': 'success',
+            'room_id': room.id,
+            'room_name': room.name,
+            'opponent_username': opponent_username,
+            'player_username': player.username,
+            'redirect_url': f'/quick-play-question-page/?room_id={player.room.id}'
+        })
+    
+
+@login_required
+def quick_play_question_page(request):
+    room_id = request.GET.get('room_id')
+    
+    # Ensure that room_id is provided
+    if not room_id:
+        return redirect('home')  # Redirect to home or an error page if no room_id is provided
+    
+    try:
+        room = Room.objects.get(id=room_id)
+    except Room.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Room not found'}, status=404)
+    
+    player, created = Player.objects.get_or_create(user=request.user)
+    
+    context = {
+        'room_id': room.id,
+        'player': player
+    }
+    return render(request, 'game/quick_play_question_page.html', context)

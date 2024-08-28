@@ -52,7 +52,8 @@ urlpatterns = [
     path('promoted/', views.promoted, name='promoted'),
     path('demoted/', views.demoted, name='demoted'),
     path('submit/', views.submit_view, name='submit'),
-
+    path('quick-play-question-page/', views.quick_play_question_page, name='quick_play_question_page'),
+    path('quick-play/', views.quick_play, name='quick_play'),
 ]
 
 if settings.DEBUG:

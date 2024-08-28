@@ -123,7 +123,7 @@
 
         <section class="buttons-section">
             <button class="scoreboard-button _3d-pixel-cursor__pointer"> <a class="a_about" href="{% url 'aboutus' %}">About Us</a></button>
-            <button class="quick-play-button _3d-pixel-cursor__pointer">Quick Play</button>
+            <button id="quick-match-button" class="quick-play-button _3d-pixel-cursor__pointer">Quick Play</button>
             <div id="waiting-popup" class="popup" style="display: none;">
                 <div class="popup-content">
                     <p id="status-text">Waiting for player...</p>
@@ -241,13 +241,15 @@
             <div class="upcoming-events">
                 <h3 class="head">Available Jobs </h3>
                 <div class="job-section">
-                  
+                  <div class="cont">
                   <div class="Job">
                     <img src="{% static 'assets/Google.png' %}" width="60px" alt="">
                     <h2>Google</h2>
                   </div>
                   <p>Google is seeking a skilled Data Analyst to join our dynamic team. You'll analyze complex datasets, generate actionable insights, and collaborate across departments to drive data-driven decisions. Strong analytical skills and experience with statistical tools are essential.
                     Package: ₹1.2 Cr.</p>
+                </div>
+                
                 </div>
             </div>
 
