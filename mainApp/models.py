@@ -42,6 +42,13 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user.username} Profile'
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    custom_timer = models.IntegerField(default=20*60)  # Default to 20 minutes
+
+    def __str__(self):
+        return self.user.username
+
 
 class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

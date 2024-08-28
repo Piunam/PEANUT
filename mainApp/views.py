@@ -14,7 +14,7 @@ import subprocess
 import os
 import tempfile
 import json
-
+from django.http import JsonResponse
 
 @login_required
 def home(request):
@@ -329,9 +329,9 @@ def get_question(request, question_id):
                 "description": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.\nYou can return the answer in any order.",
                 "difficulty": "Easy",
                 "examples": [
-                    "Input: nums = [2,7,11,15], target = 9\nOutput: [0,1]\nExplanation: Because nums[0] + nums[1] == 9, we return [0, 1].",
-                    "Input: nums = [3,2,4], target = 6\nOutput: [1,2]",
-                    "Input: nums = [3,3], target = 6\nOutput: [0,1]"
+                    "Input: nums = [2,7,11,15], target = 9\nOutput: [0, 1]\nExplanation: Because nums[0] + nums[1] == 9, we return [0, 1].",
+                    "Input: nums = [3,2,4], target = 6\nOutput: [1, 2]",
+                    "Input: nums = [3,3], target = 6\nOutput: [0, 1]"
                 ],
                 "time_limit": 20 * 60  # 20 minutes
             }
@@ -465,6 +465,19 @@ def compile_code(request):
                 os.remove(source_file_path.replace(file_extension, '.class'))
 
     return JsonResponse({'output': 'Invalid request method'}, status=405)
+
+from django.shortcuts import render
+
+def quick_play(request):
+    return render(request, 'quick_play.html')
+
+def save_custom_timer(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        custom_time = data.get('custom_time')
+        # Save custom_time to the database or session if needed
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'}, status=400)
 
 
 def submit_code(request):
