@@ -43,7 +43,21 @@ INSTALLED_APPS = [
     'corsheaders',
     'social_django',
     'mainApp',
+    'channels',
 ]
+ASGI_APPLICATION = 'PEANUTS.asgi.application',
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+        # Or use Redis for production:
+        # "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

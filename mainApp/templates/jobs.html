@@ -111,9 +111,6 @@
                             </ul>
                         </div>
 
-                        <div class="feed-section">
-                            <a href="{% url 'community_feed' %}">Go to Feed Section</a>
-                        </div>
                     </div>
 
                     <div class="side-container">
@@ -133,17 +130,6 @@
                     </div>
                 </div>
 
-                <section id="groups">
-                    <h2>Groups</h2>
-                    <div class="groups-list">
-                        {% for group in groups %}
-                            <div class="group">
-                                <h3>{{ group.name }}</h3>
-                                <p>{{ group.description }}</p>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </section>
             </main>
         </div>
     </div>

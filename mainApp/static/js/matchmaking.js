@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const startMatchButton = document.getElementById('start-match-button');
+    const quickPlayButton = document.getElementById('quick-match-button');
     const form = document.getElementById('question-form');
     const waitingPopup = document.getElementById('waiting-popup');
     const matchFoundPopup = document.getElementById('match-found-popup');
@@ -117,3 +118,46 @@ document.addEventListener('DOMContentLoaded', function () {
         return urlParams.get('room_id');
     }
 });
+
+
+if (quickPlayButton) {
+    quickPlayButton.addEventListener('click', function () {
+        console.log("Quick Play button has been clicked!");
+
+        // Show "Waiting for player..." popup
+        waitingPopup.style.display = 'flex';
+
+        fetch('/quick-play/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Hide "Waiting for player..." popup immediately since it's a solo match
+                waitingPopup.style.display = 'none';
+
+                // Show "Match Found!" popup immediately
+                matchFoundPopup.style.display = 'flex';
+
+                setTimeout(() => {
+                    matchFoundPopup.style.display = 'none';
+
+                    // Set player names for "Vs" screen
+                    player1Name.textContent = data.player_username || "Player 1";
+                    player2Name.textContent = "AI Opponent"; // or any placeholder name for the opponent
+
+                    // Show "Vs" screen popup
+                    vsScreenPopup.style.display = 'flex';
+
+                    setTimeout(() => {
+                        window.location.href = data.redirect_url; // Redirect to the match
+                    }, 3000); // Wait for 3 seconds before redirecting
+                }, 2000); // Wait for 2 seconds before showing "Vs" screen
+            }
+        });
+    });
+}
