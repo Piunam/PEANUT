@@ -22,6 +22,8 @@ from mainApp import views
 from mainApp.views import compile_code
 from django.conf.urls.static import static
 from django.conf import settings
+from mainApp.views import quick_play, save_custom_timer
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -49,6 +51,8 @@ urlpatterns = [
     path('accounts/community/groups/', views.groups, name='groups'),
     path('accounts/community/frandz/', views.frandz, name='frandz'),
     path('accounts/community/hackathons/', views.hackathons, name='hackathons'),
+    path('quick_play/', views.quick_play, name='quick_play'),
+    path('save-custom-timer/', save_custom_timer, name='save_custom_timer'),
 
 ]
 
