@@ -505,7 +505,8 @@ def submit_code(request):
 
 
 
-@csrf_exempt
+@csrf_exempt 
+# CHUTIYA BANANE KI TECHIQUE
 def handle_match_result(request):
     if request.method == 'POST':
         data = json.loads(request.body)
