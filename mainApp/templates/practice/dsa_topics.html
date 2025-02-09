@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DSA Topics</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #262626;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+    color: #fff200;
+    font-size: 43px;
+}
+
+.topics {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
+    gap: 20px; /* Spacing between cards */
+    padding: 0;
+    list-style-type: none; /* Removes default list styling */
+}
+
+.topic-card {
+    background-color: #ffffff00;
+    border: 2px solid #fff200;
+    border-radius: 8px;
+    padding: 40px;
+    text-align: center;
+    transition: transform 0.2s; /* Animation for hover effect */
+}
+
+.topic-card a {
+    text-decoration: none;
+    color: #ffffff; /* Link color */
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.topic-card a:hover{
+    color: white;
+}
+.topic-card:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect on hover */
+    background-color: #fbff0078;
+    color: white;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Data Structures and Algorithms Topics</h1>
+        <div class="topics">
+            {% for topic in topics %}
+                <div class="topic-card">
+                    <a href="{% url 'dsa_questions_page' topic=topic %}">{{ topic }}</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

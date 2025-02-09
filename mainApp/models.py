@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 class Room(models.Model):
     name = models.CharField(max_length=50)
@@ -34,6 +35,31 @@ class Room(models.Model):
 
         # Allow if both ranks are within the same rank group (Bronze, Silver, etc.)
         return abs(room_rank_index - player_rank_index) <= 3
+
+
+class FreelanceProject(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    budget = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=50, default='pending')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)  # Change to ForeignKey
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    application_count = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return self.title
+
+    def increment_application_count(self):
+        self.application_count += 1
+        self.save()
+
+
+class Application(models.Model):
+    project = models.ForeignKey(FreelanceProject, on_delete=models.CASCADE, related_name='applications')
+    applicant = models.ForeignKey(User, on_delete=models.CASCADE)
+    applied_at = models.DateTimeField(auto_now_add=True)
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -122,4 +148,56 @@ class FeedPost(models.Model):
     def __str__(self):
         return f'{self.user.username}: {self.content[:50]}'
 
+class Violation(models.Model):
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    violation_type = models.CharField(max_length=100)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.player.user.username} - {self.violation_type}"
 
+
+# PROJECT
+class Project(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+class Application(models.Model):
+    project = models.ForeignKey(Project, related_name='applications', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)  
+    # cover_letter = models.TextField()
+    price_offer = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    ubmitted_at = models.DateTimeField(auto_now_add=True)
+    cover_letter = models.TextField(default="No cover letter provided")
+
+
+    # Recommendations
+
+
+class Field(models.Model):
+    name = models.CharField(max_length=255)
+    roadmap = models.TextField()
+    books = models.TextField()
+    youtube_videos = models.TextField()
+    courses = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+
+# PRACTICE
+class DSATopic(models.Model):
+    name = models.CharField(max_length=100)
+
+class DSAQuestion(models.Model):
+    topic = models.ForeignKey(DSATopic, on_delete=models.CASCADE)
+    level = models.CharField(max_length=10, choices=[('Easy', 'Easy'), ('Medium', 'Medium'), ('Hard', 'Hard')])
+    question = models.TextField()
+    answer = models.TextField()

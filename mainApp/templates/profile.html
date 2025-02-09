@@ -11,17 +11,20 @@
     <style>
         .main-container {
             display: flex;
+            flex-direction: row;
+            margin: 20px;
         }
 
         .left {
             width: 30%;
-
         }
-        .left>img{
+
+        .left > img {
             padding: 20px;
             margin-left: 40px;
         }
-        .left>h2{
+
+        .left > h2 {
             margin-left: 60px;
             font-family: Arial, Helvetica, sans-serif;
             font-weight: 800;
@@ -43,29 +46,25 @@
         }
 
         .bt-text {
-
             margin: 4px;
             align-items: center;
             padding: 15px;
             width: 200px;
             height: 150px;
             text-align: center;
-
         }
 
-        .bt-text>h3 {
+        .bt-text > h3 {
             background: #ffdf00;
             font-weight: 800;
-            ;
             font-size: 25px;
             border-radius: 12px;
             padding: 10px;
             color: black;
             font-family: "Handjet", sans-serif;
-
         }
 
-        .bt-text>p {
+        .bt-text > p {
             font-family: Arial, Helvetica, sans-serif;
             font-weight: 500;
         }
@@ -73,26 +72,34 @@
         .upcoming-events {
             width: 300px !important;
         }
-        .inner{
+
+        .inner {
             display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
         }
-        .dam>h2 {
+
+        .dam > h2 {
             font-family: Arial, Helvetica, sans-serif;
         }
-        .wefkkdup{
+
+        .wefkkdup {
             background: #161616;
             padding: 15px;
             border: 2px solid #ffdf00;
             width: 250px;
             border-radius: 12px;
         }
-        .flex>h4{
+
+        .flex > h4 {
             font-family: Arial, Helvetica, sans-serif;
         }
-        .links{
+
+        .links {
             margin-left: 110px;
         }
-        .Ranks{
+
+        .Ranks {
             background-color: #ffdf00;
             padding: 15px;
             border-radius: 12px;
@@ -107,22 +114,26 @@
             transition: 0.2s ease-in-out;
             cursor: pointer;
         }
-        .Ranks:hover{
+
+        .Ranks:hover {
             background-color: #ffffff;
             color: #161616;
             box-shadow: 3px 3px 0px #ffdf00;
         }
-        .actions{
+
+        .actions {
             margin-left: 120px;
             align-items: center;
         }
-        .actions>h2{
+
+        .actions > h2 {
             padding: 15px;
             font-size: 30px;
             font-family: Arial, Helvetica, sans-serif;
             font-weight: 700;
         }
-        .btn{
+
+        .btn {
             background-color: #ffdf00;
             padding: 14px;
             border-radius: 12px;
@@ -133,10 +144,62 @@
             transition: 0.2s ease-in-out;
             cursor: pointer;
         }
-        .btn:hover{
+
+        .btn:hover {
             background-color: #161616;
             color: white;
             border: 2px solid white;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .badge img {
+            width: 50px;
+            height: 50px;
+        }
+
+        /* Modal styles for viewing resume */
+        .modal {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
         }
     </style>
 </head>
@@ -147,7 +210,6 @@
             <div class="logo">
                 Peanuts
                 <img class="logo_img" width="70px" src="{% static 'assets/peanut.png' %}" alt="">
-                
             </div>
 
             <nav>
@@ -166,14 +228,12 @@
                         <button type="submit" class="sign-up"
                             style="background:none;border:none;color:#ffffff;cursor:pointer;">Logout</button>
                     </form>
-                    </li>
                     {% else %}
                     <li><a class="sign-up _3d-pixel-cursor__pointer" href="{% url 'login' %}">Login</a></li>
                     {% endif %}
                 </ul>
             </nav>
         </header>
-
 
         <main class="main-container">
             <div class="left">
@@ -189,15 +249,16 @@
                     <h2>Actions</h2>
                     <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
                     <li><a class="_3d-pixel-cursor__pointer" href="{% url 'profile' %}">
-                            <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'assets/default.jpg' %}{% endif %}"
-                                class="profile_img" alt="Profile Picture">
+                            <!-- <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'assets/default.jpg' %}{% endif %}"
+                                class="profile_img" alt="Profile Picture"> -->
                         </a></li>
-
-                    <!-- Assuming you have an 'edit_profile' view to handle profile editing -->
                 </section>
             </div>
             <div class="right">
-                <img src="{% static 'assets/Profile-Section.png' %}" width="950px" alt="">
+                <div class="profile-header">
+                    <h1>Profile</h1>
+                    <button id="followButton" class="btn">Follow</button>
+                </div>
 
                 <h1 class="username">Welcome, {{ user.username }}!</h1>
 
@@ -205,44 +266,116 @@
                     <div class="prblm_sol bt-text">
                         <h3>1</h3>
                         <p>PROBLEM SOLUTION</p>
-
                     </div>
                     <div class="rank bt-text">
-                        <h3> BRONZE - I </h3>
+                        <h3>BRONZE - I</h3>
                         <P>RANK</P>
                     </div>
                     <div class="level bt-text">
-                        <h3> 4 </h3>
+                        <h3>4</h3>
                         <P>LEVEL</P>
                     </div>
                     <div class="badges bt-text">
-                        <h3> N.A. </h3>
+                        <h3>N.A.</h3>
                         <P>BADGES</P>
                     </div>
                 </div>
 
                 <div class="inner">
-
                     <section class="upcoming-events">
                         <h2>Profile Details</h2>
-                        <p><strong>Username:</strong> {{ user.username }}</p>
+                        <p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
                         <p><strong>Email:</strong> {{ user.email }}</p>
-                        <p><strong>User Type:</strong> {{ user.user_type }}</p> <!-- Display user type -->
                     </section>
-                    <section class="wefkkdup">
-                        <div class="dam">
-                            <h2>POSTS</h2>
-                            <div class="flex">
-                                <img src="{% static 'assets/profile.png' %}" width="30px" alt="">
-                                <h4>@Keshxvdayal</h4>
-                            </div>
-                        </div>
-                    </section>
+
+                    <div class="wefkkdup">
+                        <h2>Upload Resume</h2>
+                        <input type="file" id="resumeUpload" onchange="handleResumeUpload(event)">
+                        <div id="resumePreview" class="resume-preview"></div>
+                        <button id="viewResumeBtn" class="btn" style="display: none;" onclick="viewResume()">View Resume</button>
+                    </div>
                 </div>
-               
             </div>
         </main>
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span id="popupMessage">You are now following!</span>
+                <button onclick="closePopup()">Close</button>
+            </div>
+        </div>
+
+        <div id="unfollowPopup" class="popup">
+            <div class="popup-content">
+                <span id="popupMessage">You have unfollowed!</span>
+                <button onclick="closePopup()">Close</button>
+            </div>
+        </div>
+
+        <!-- Resume Modal -->
+        <div id="resumeModal" class="modal">
+            <div class="modal-content">
+                <h2>Uploaded Resume</h2>
+                <div id="resumeContent"></div>
+                <button onclick="closeResumeModal()">Close</button>
+            </div>
+        </div>
     </div>
+
+    <script>
+        let isFollowing = false;
+
+        document.getElementById('followButton').onclick = function () {
+            isFollowing = !isFollowing;
+            if (isFollowing) {
+                this.innerText = 'Unfollow';
+                alert('You are now following!');
+                showPopup();
+            } else {
+                this.innerText = 'Follow';
+                alert('You have unfollowed!');
+                showUnfollowPopup();
+            }
+        }
+
+        function handleResumeUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const preview = document.getElementById('resumePreview');
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.innerHTML = '<p>Resume Uploaded: ' + file.name + '</p>';
+                    document.getElementById('viewResumeBtn').style.display = 'inline-block'; // Show view resume button
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function viewResume() {
+            const file = document.getElementById('resumeUpload').files[0];
+            if (file) {
+                const resumeContent = document.getElementById('resumeContent');
+                resumeContent.innerHTML = `<p>Viewing resume: ${file.name}</p><a href="${URL.createObjectURL(file)}" target="_blank">Download Resume</a>`;
+                document.getElementById('resumeModal').style.display = 'flex'; // Show modal
+            }
+        }
+
+        function showPopup() {
+            document.getElementById('popup').style.display = 'flex';
+        }
+
+        function showUnfollowPopup() {
+            document.getElementById('unfollowPopup').style.display = 'flex';
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('unfollowPopup').style.display = 'none';
+        }
+
+        function closeResumeModal() {
+            document.getElementById('resumeModal').style.display = 'none';
+        }
+    </script>
 </body>
 
 </html>

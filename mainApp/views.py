@@ -8,13 +8,17 @@ from mainApp.models import *
 from mainApp.forms import*
 from django.contrib import messages
 from django.http import JsonResponse
-from .models import Player
+from .models import Player, FreelanceProject, Application
 from .models import Question
 import subprocess
 import os
 import tempfile
 import json
-from django.http import JsonResponse
+from .forms import FreelanceProjectForm
+import random
+from django.conf import settings
+from django.http import JsonResponse, HttpResponseBadRequest
+
 
 @login_required
 def home(request):
@@ -44,6 +48,56 @@ def profile(request:HttpRequest):
 def logout_view(request):
     logout(request)
     return redirect('home')
+
+
+@login_required
+def freelancing_project_list(request):
+    projects = FreelanceProject.objects.all()  # Fetch all projects
+    return render(request, 'project_list.html', {'projects': projects})
+
+@login_required  
+def post_project(request):
+    if request.method == 'POST':
+        form = FreelanceProjectForm(request.POST)
+        projects = FreelanceProject.objects.all()
+        
+        if form.is_valid():
+            # Check if the user already has a project
+            if FreelanceProject.objects.filter(user=request.user).exists():
+                messages.error(request, "You already have a project posted.")
+                return redirect('freelancing_project_list')  # Redirect to the project list
+            
+            # Create a new project if no existing project
+            project = form.save(commit=False)
+            project.user = request.user  # Correct assignment of user field
+            project.save()
+            messages.success(request, "Project posted successfully.")
+            return redirect('freelancing_project_list')  # Redirect to the project list
+
+    else:
+        form = FreelanceProjectForm()  # Display an empty form on GET request
+
+    return render(request, 'post_project.html', {'form': form})
+
+
+
+@login_required
+def apply_to_project(request, project_id):
+    project = get_object_or_404(FreelanceProject, id=project_id)
+    
+    # Check if the user has already applied
+    if Application.objects.filter(project=project, applicant=request.user).exists():
+        return JsonResponse({'status': 'error', 'message': 'You have already applied to this project.'})
+    
+    # Create a new application
+    Application.objects.create(project=project, applicant=request.user)
+    
+    # Increment the application count
+    project.increment_application_count()
+    
+    return JsonResponse({'status': 'success', 'message': 'Application submitted successfully.'})
+
+
 
 @login_required
 def edit_profile(request):
@@ -118,6 +172,14 @@ def groups(request):
 @login_required
 def frandz(request):
     return render(request, 'frandz.html')
+
+@login_required
+def mentor(request):
+    return render(request, 'mentoring.html')
+
+@login_required
+def roadmap(request):
+    return render(request, 'roadmap.html')
 
 @login_required
 def hackathons(request):
@@ -213,9 +275,22 @@ def aboutus(request):
 @login_required
 def promoted(request):
     return render(request, 'Promoted.html')
+
+@login_required
+def leetcode(request):
+    return render(request, 'Leetcode.html')
+
+@login_required
+def webdev(request):
+    return render(request, 'web_dev.html')
+
 @login_required
 def demoted(request):
     return render(request, 'Demote.html')
+
+@login_required
+def quick_play(request):
+    return render(request, 'quick_play.html')
 
 
 
@@ -468,8 +543,8 @@ def compile_code(request):
 
 from django.shortcuts import render
 
-def quick_play(request):
-    return render(request, 'quick_play.html')
+# def quick_play(request):
+#     return render(request, 'quick_play.html')
 
 def save_custom_timer(request):
     if request.method == 'POST':
@@ -575,48 +650,61 @@ def submit_view(request):
     else:
         return JsonResponse({'status': 'demoted'})
 
-@csrf_exempt
-@login_required
-def quick_play(request):
-    if request.method == 'POST':
-        user = request.user
-        player, created = Player.objects.get_or_create(user=user)
+# @csrf_exempt
+# @login_required
+# def quick_play(request):
+#     if request.method == 'POST':
+#         user = request.user
+#         player, created = Player.objects.get_or_create(user=user)
 
-        # Fetch the player's rank
-        player_rank = player.rank
+#         # Fetch the player's rank
+#         player_rank = player.rank
 
-        # Find an available room that isn't occupied
-        room = Room.objects.filter(is_occupied=False).first()
+#         # Find an available room that isn't occupied
+#         room = Room.objects.filter(is_occupied=False).first()
 
-        if not room:
-            # Create a new room if no available room is found
-            room = Room.objects.create(name=f"Room-{Room.objects.count() + 1}")
-            print("New Room created :)", room.id)
+#         if not room:
+#             # Create a new room if no available room is found
+#             room = Room.objects.create(name=f"Room-{Room.objects.count() + 1}")
+#             print("New Room created :)", room.id)
 
-        # Assign player to room
-        room.current_players += 1
-        player.room = room
-        player.is_in_queue = True
-        player.save()
-        room.save()
+#         # Assign player to room
+#         room.current_players += 1
+#         player.room = room
+#         player.is_in_queue = True
+#         player.save()
+#         room.save()
 
-        # Mark the room as occupied for quick play
-        room.is_occupied = True
-        room.save()
+#         # Mark the room as occupied for quick play
+#         room.is_occupied = True
+#         room.save()
 
-        # For quick play, we don't need to wait for another player
-        # Treat it as a match against an AI or a solo match
-        opponent_username = "AI Opponent"  # Placeholder for the opponent
+#         # For quick play, treat it as a match against an AI
+#         opponent_username = "AI Opponent"
 
-        return JsonResponse({
-            'status': 'success',
-            'room_id': room.id,
-            'room_name': room.name,
-            'opponent_username': opponent_username,
-            'player_username': player.username,
-            'redirect_url': f'/quick-play-question-page/?room_id={player.room.id}'
-        })
+#         return JsonResponse({
+#             'status': 'success',
+#             'room_id': room.id,
+#             'room_name': room.name,
+#             'opponent_username': opponent_username,
+#             'player_username': player.username,
+#             'redirect_url': f'/quick-play-question-page/?room_id={player.room.id}'
+#         })
     
+#     # Render a setup page for the GET request
+#     return render(request, 'game/quick_play_setup.html')
+
+
+def test_face_detection(request):
+    # Check if model files exist
+    models_path = os.path.join(settings.BASE_DIR, 'static', 'models')
+    model_files = os.listdir(models_path)
+    
+    context = {
+        'model_files': model_files,
+        'models_path': models_path
+    }
+    return render(request, 'test_face_detection.html', context)
 
 @login_required
 def quick_play_question_page(request):
@@ -637,4 +725,152 @@ def quick_play_question_page(request):
         'room_id': room.id,
         'player': player
     }
-    return render(request, 'game/quick_play_question_page.html', context)
+    
+    # Ensure the function always returns a response
+    return render(request, 'game/question_page.html', context)
+
+
+def handle_violation(request):
+    if request.method == 'POST':
+        room_id = request.POST.get('room_id')
+        violation_type = request.POST.get('violation_type')
+        
+        # Log the violation
+        room = Room.objects.get(id=room_id)
+        player = Player.objects.get(user=request.user)
+        
+        Violation.objects.create(
+            player=player,
+            room=room,
+            violation_type=violation_type
+        )
+        
+        return JsonResponse({'status': 'success'})
+
+
+
+def test_face_detection(request):
+    # Check if model files exist
+    models_path = os.path.join(settings.BASE_DIR, 'static', 'models')
+    model_files = os.listdir(models_path)
+    
+    context = {
+        'model_files': model_files,
+        'models_path': models_path
+    }
+    return render(request, 'test_face_detection.html', context)
+
+
+    # PROJECT:
+def project_list(request):
+    projects = Project.objects.all()
+    return render(request, 'project_list.html', {'projects': projects})
+
+def apply_to_project(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    
+    if request.method == 'POST':
+        form = ApplicationForm(request.POST)
+        if form.is_valid():
+            application = form.save(commit=False)
+            application.project = project
+            application.user = request.user
+            application.save()
+            return redirect('project_list')
+    else:
+        form = ApplicationForm()
+
+    return render(request, 'apply_form.html', {'project': project})
+
+
+    
+# VIDEO CONFERENCING
+# from django.shortcuts import render, redirect
+# from django.contrib.auth import authenticate, login, logout
+# from django.contrib.auth.decorators import login_required
+
+# Create your views here.
+
+def index(request):
+    return render(request, '/video_conferencing/index.html')
+
+# def register(request):
+#     if request.method == 'POST':
+#         form = RegisterForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return render(request, '/video_conferencing/login.html', {'success': "Registration successful. Please login."})
+#         else:
+#             error_message = form.errors.as_text()
+#             return render(request, '/video_conferencing/register.html', {'error': error_message})
+
+#     return render(request, '/video_conferencing/register.html')
+
+
+# def login_view(request):
+    # if request.method=="POST":
+    #     email = request.POST.get('email')
+    #     password = request.POST.get('password')
+    #     user = authenticate(request, username=email, password=password)
+    #     if user is not None:
+    #         login(request, user)
+    #         return redirect("/video_conferencing//dashboard")
+    #     else:
+    #         return render(request, 'login.html', {'error': "Invalid credentials. Please try again."})
+
+    # return render(request, '/video_conferencing/login.html')
+
+
+def dashboard(request):
+    return render(request, 'video_conferencing/dashboard.html')
+
+
+def videocall(request):
+    return render(request, 'video_conferencing/videocall.html')
+
+
+# def logout_view(request):
+#     logout(request)
+#     return redirect("/login")
+
+
+def join_room(request):
+    if request.method == 'POST':
+        roomID = request.POST['roomID']
+        return redirect("/meeting?roomID=" + roomID)
+    return render(request, 'video_conferencing/joinroom.html')
+
+
+
+    # Recommendations
+def search_field(request):
+    query = request.GET.get('query', '')
+    fields = []
+    
+    if query:
+        fields = Field.objects.filter(name__icontains=query)  # Adjust based on your model's field
+
+    return render(request, 'search.html', {'query': query, 'fields': fields})
+
+def field_info(request, field_name):
+    field = get_object_or_404(Field, name=field_name)
+    return render(request, 'field_info.html', {'field': field})
+
+
+# CHATBOT
+# Practice
+def load_questions():
+    # Construct the absolute path
+    json_file_path = os.path.join(settings.BASE_DIR, 'practice', 'dsa_questions.json')
+    with open(json_file_path) as f:
+        return json.load(f)
+
+def dsa_topics(request):
+    questions = load_questions()
+    topics = questions.keys()
+    return render(request, 'practice/dsa_topics.html', {'topics': topics})
+
+def dsa_questions_page(request, topic):
+    questions = load_questions()
+    topic_questions = questions.get(topic, {})
+    return render(request, 'practice/dsa_questions_page.html', {'topic': topic, 'questions': topic_questions})

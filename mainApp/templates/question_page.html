@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 {% load static %}
 
 <head>
@@ -32,7 +31,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px;
-            background-color: #333;
+            background-color: black;
             color: white;
         }
 
@@ -67,7 +66,6 @@
             height: 40vh;
             border: 1px solid #ccc;
             background-color: rgb(0, 0, 0);
-
         }
 
         #run-code-button {
@@ -103,7 +101,6 @@
 
         .output-text {
             color: #ffdf00;
-
         }
 
         .form-select {
@@ -127,7 +124,6 @@
             width: 16%;
             font-weight: 800;
             font-family: "Handjet", sans-serif;
-            /* height: 40px; */
             border-radius: 13px;
             padding: 8px;
         }
@@ -140,6 +136,160 @@
     {% load static %}
 </head>
 
+<div class="webcam-container">
+    <video id="videoElement" width="640" height="480" autoplay></video>
+    <canvas id="overlay" width="640" height="480"></canvas>
+    <div id="warning-message" class="warning-message"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
+<script>
+    // Face detection and movement monitoring
+    let warningCount = 0;
+    let lastFrame = null;
+    let faceApiInitialized = false;
+    let stream = null;
+    
+    async function loadFaceDetectionModels() {
+        await faceapi.nets.tinyFaceDetector.loadFromUri('/static/models');
+        await faceapi.nets.faceLandmark68Net.loadFromUri('/static/models');
+        faceApiInitialized = true;
+    }
+    
+    async function startWebcam() {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const video = document.getElementById('videoElement');
+            video.srcObject = stream;
+        } catch (err) {
+            console.error("Error accessing webcam:", err);
+            alert("Unable to access webcam. Please ensure you have granted camera permissions.");
+        }
+    }
+    
+    function detectMovement(currentFrame, previousFrame, threshold = 30) {
+        if (!previousFrame) return false;
+    
+        const diffCanvas = document.createElement('canvas');
+        diffCanvas.width = currentFrame.width;
+        diffCanvas.height = currentFrame.height;
+        const diffContext = diffCanvas.getContext('2d');
+        
+        // Get image data
+        const current = currentFrame.getContext('2d').getImageData(0, 0, currentFrame.width, currentFrame.height);
+        const previous = previousFrame.getContext('2d').getImageData(0, 0, previousFrame.width, previousFrame.height);
+        
+        let movement = 0;
+        
+        // Compare pixels
+        for (let i = 0; i < current.data.length; i += 4) {
+            const diff = Math.abs(current.data[i] - previous.data[i]);
+            if (diff > threshold) {
+                movement++;
+            }
+        }
+        
+        // Return true if significant movement detected
+        return movement > (current.data.length / 4) * 0.01; // 1% of pixels changed
+    }
+    
+    async function monitorUser() {
+        if (!faceApiInitialized) {
+            await loadFaceDetectionModels();
+        }
+    
+        const video = document.getElementById('videoElement');
+        const canvas = document.getElementById('overlay');
+        const context = canvas.getContext('2d');
+        
+        setInterval(async () => {
+            // Capture current frame
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const currentFrame = canvas.toDataURL();
+            
+            // Detect face
+            const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions());
+            
+            if (detections.length === 0) {
+                handleWarning("No face detected!");
+            } else if (detections.length > 1) {
+                handleWarning("Multiple faces detected!");
+            } else {
+                // Check for background movement
+                if (lastFrame && detectMovement(canvas, lastFrame)) {
+                    handleWarning("Movement detected in background!");
+                }
+            }
+            
+            // Store current frame
+            lastFrame = canvas;
+            
+        }, 1000); // Check every second
+    }
+    
+    function handleWarning(message) {
+        warningCount++;
+        const warningElement = document.getElementById('warning-message');
+        warningElement.textContent = `Warning ${warningCount}/2: ${message}`;
+        
+        if (warningCount >= 2) {
+            endQuickPlay();
+        }
+    }
+    
+    function endQuickPlay() {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+        }
+        // Save any necessary data
+        alert("Quick play session ended due to violations");
+        window.location.href = '/'; // Redirect to home or appropriate page
+    }
+    
+    // Start monitoring when page loads
+    document.addEventListener('DOMContentLoaded', async () => {
+        await startWebcam();
+        await monitorUser();
+    });
+</script>
+    
+<style>
+    .webcam-container {
+        position: relative;
+        width: 640px;
+        height: 480px;
+        margin: 0 auto;
+    }
+    
+    #videoElement {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    
+    #overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    
+    .warning-message {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(255, 0, 0, 0.8);
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        display: none;
+    }
+    
+    .warning-message.active {
+        display: block;
+    }
+</style>
+
 <body>
     <header>
         <div class="logo">
@@ -147,13 +297,11 @@
             <img class="logo_img" width="70px" src="{% static 'assets/peanut.png' %}" alt="">
         </div>
         <nav>
-
         </nav>
     </header>
-    <!-- <div class="container"> -->
     <main class="main-content">
         <section class="question-section">
-            <div class=" timer-section">
+            <div class="timer-section">
                 <h2 class="question" id="question-title">Loading Question...</h2>
                 <div id="timer">Loading...</div>
             </div>
@@ -162,7 +310,6 @@
                 <!-- Question will be loaded here -->
             </div>
             <input type="hidden" id="question-id" value="{{ question.id }}">
-
         </section>
         <section class="editor-section">
             <div class="d-flex justify-content-between searchbar">
@@ -172,18 +319,30 @@
                     <option value="java">Java</option>
                     <option value="cpp">C++</option>
                 </select>
-                <!-- <button >Run Code</button> -->
                 <button id="run-code-button" onclick="submitCode()">Run Code</button>
             </div>
             <div id="code-editor"></div>
             <div class="mt-2">
-                <label for="output" class="output-text ">Output</label>
+                <label for="output" class="output-text">Output</label>
                 <pre id="output"></pre>
             </div>
         </section>
     </main>
-    </div>
     <script>
+        // Security function to prevent tab/window change
+        let warningDisplayed = false;
+
+        window.addEventListener("blur", () => {
+            if (!warningDisplayed) {
+                alert("Warning: Do not change tab, LAST WARNING");
+                warningDisplayed = true;
+            }
+        });
+
+        window.addEventListener("focus", () => {
+            warningDisplayed = false; // Reset warning when the user returns
+        });
+
         const questions = {
             "easy": [
                 {
@@ -237,142 +396,86 @@
             ]
         };
 
-
         // Function to generate the expected output based on the question
         function getExpectedOutput(questionId) {
             const question = questions[questionId.difficulty][0]; // Assume only one question per difficulty
-            const examples = question.examples;
-            const expectedOutputs = examples.map(example => example.output);
-            return expectedOutputs;
+            const example = question.examples[0]; // Get the first example for expected output
+            return example.output;
         }
 
-        // Load question and set up the environment
-        function loadQuestion(difficulty) {
-            const question = questions[difficulty][0];
-            document.getElementById('question-title').innerText = question.title;
-            document.getElementById('question-difficulty').innerText = `Difficulty: ${question.difficulty}`;
-            document.getElementById('question-content').innerHTML = `<p>${question.description}</p><pre>${question.examples.map(example => example.input + "\n" + example.output).join('\n\n')}</pre>`;
+        function loadQuestion() {
+            const questionId = document.getElementById("question-id").value; // Simulate fetching the question id
+            const difficulty = (questionId === "1") ? "easy" : (questionId === "2") ? "medium" : "hard"; // Example difficulty mapping
 
-            // Set the timer based on difficulty
-            let timeLimit;
-            switch (difficulty) {
-                case 'easy':
-                    timeLimit = 20 * 60;
-                    break;
-                case 'medium':
-                    timeLimit = 40 * 60;
-                    break;
-                case 'hard':
-                    timeLimit = 60 * 60;
-                    break;
-                default:
-                    timeLimit = 20 * 60; // Default to easy if difficulty is unknown
-            }
+            const question = questions[difficulty][0]; // Load the first question based on difficulty
 
-            startTimer(timeLimit);
-        }
+            document.getElementById("question-title").innerText = question.title;
+            document.getElementById("question-content").innerText = question.description;
+            document.getElementById("question-difficulty").innerText = "Difficulty: " + question.difficulty;
 
-        // Timer function
-        function startTimer(duration) {
-            const timerDisplay = document.getElementById('timer');
-            let time = duration;
-
-            const interval = setInterval(() => {
-                const minutes = Math.floor(time / 60);
-                const seconds = time % 60;
-                timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-                time--;
-
-                if (time < 0) {
-                    clearInterval(interval);
-                    timerDisplay.textContent = "Time's up!";
-                    document.getElementById('run-code-button').disabled = true;
+            // Set the timer for 60 seconds (or adjust as needed)
+            let timeLeft = 60;
+            const timerElement = document.getElementById("timer");
+            const timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Time is up!");
+                } else {
+                    timerElement.innerText = `Time Left: ${timeLeft--} seconds`;
                 }
             }, 1000);
+
+            // Set up the Monaco Editor
+            require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs' } });
+            require(['vs/editor/editor.main'], function () {
+                const editor = monaco.editor.create(document.getElementById("code-editor"), {
+                    value: "",
+                    language: "javascript",
+                    theme: "vs-dark",
+                });
+
+                // Prevent copying and pasting in the editor
+                editor.addCommand(monaco.KeyMod.Ctrl | monaco.KeyCode.KEY_V, () => { alert("Pasting is disabled."); });
+                editor.addCommand(monaco.KeyMod.Ctrl | monaco.KeyCode.KEY_C, () => { alert("Copying is disabled."); });
+
+                // Add functionality to disallow pasting and copying
+                editor.onKeyDown((e) => {
+                    if (e.keyCode === 67 && (e.ctrlKey || e.metaKey)) { // Ctrl + C
+                        e.preventDefault();
+                        alert("Copying is disabled.");
+                    }
+                    if (e.keyCode === 86 && (e.ctrlKey || e.metaKey)) { // Ctrl + V
+                        e.preventDefault();
+                        alert("Pasting is disabled.");
+                    }
+                });
+            });
         }
-
-        // Load an easy question by default
-        loadQuestion('easy');
-
-        // Initialize Monaco editor
-        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs' } });
-        require(['vs/editor/editor.main'], function () {
-            var editor = monaco.editor.create(document.getElementById('code-editor'), {
-                value: `function twoSum(nums, target) {
-    // Implement your solution here
-    return []; // Change this to your return statement
-}`,
-                language: 'javascript',
-                theme: 'vs-dark',
-            });
-
-            document.getElementById('language-select').addEventListener('change', function () {
-                var lang = this.value;
-                monaco.editor.setModelLanguage(editor.getModel(), lang);
-            });
-
-            document.getElementById('run-code-button').addEventListener('click', function () {
-                var code = editor.getValue();
-                var lang = document.getElementById('language-select').value;
-
-                fetch('http://localhost:8000/compile/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ code: code, lang: lang })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('output').textContent = data.output || 'Error occurred';
-
-                        const questionId = { difficulty: 'easy' }; // Replace with actual question ID
-                        const expectedOutputs = getExpectedOutput(questionId);
-
-                        if (expectedOutputs.includes(data.output.trim())) {
-                            alert('Success');
-                        } else {
-                            alert('Failed');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        document.getElementById('output').textContent = 'Error occurred';
-                    });
-            });
-        });
 
         function submitCode() {
-            let userCode = document.getElementById("code-editor").value;
-            let questionId = document.getElementById("question-id").value;
-            let expectedOutputs = getExpectedOutput(questionId);
+            const selectedLanguage = document.getElementById("language-select").value;
+            const userCode = editor.getValue();
+            const expectedOutput = getExpectedOutput({ difficulty: "easy" }); // Use the loaded question's difficulty
 
-            fetch('/submit_code/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({
-                    'question_id': questionId,
-                    'user_code': userCode
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    let userOutput = data.output || 'Error occurred';
-                    if (expectedOutputs.includes(userOutput.trim())) {
-                        alert('Success');
-                    } else {
-                        alert('Failed');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error occurred');
-                });
+            // Simulating output; this would be a backend call in a real app
+            const output = simulateCodeExecution(userCode, selectedLanguage);
+            const outputElement = document.getElementById("output");
+
+            if (output === expectedOutput) {
+                outputElement.innerText = "Correct Output!";
+            } else {
+                outputElement.innerText = `Expected: ${expectedOutput}\nYour Output: ${output}`;
+            }
         }
 
-    </script>
+        function simulateCodeExecution(code, language) {
+            // Simulated execution for demonstration purposes
+            // Replace with actual execution logic (e.g., sending code to backend)
+            return "Simulated output based on code execution.";
+        }
 
+        window.onload = loadQuestion; // Load question when the page is loaded
+    </script>
 </body>
 
 </html>

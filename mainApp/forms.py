@@ -12,6 +12,26 @@ class AchievementForm(forms.ModelForm):
         fields = ['title', 'description']
 
 
+class FreelanceProjectForm(forms.ModelForm):
+    
+    class Meta:
+        model = FreelanceProject
+        fields = ['title', 'description', 'budget']
+        # posted_by = models.ForeignKey(User, on_delete=models.CASCADE)
+
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Project Title'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Project Description'}),
+            'budget': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Budget'}),
+        }
+
+        labels = {
+            'title': 'Project Title',
+            'description': 'Project Description',
+            'budget': 'Budget (₹)',
+        }
+
+
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
@@ -38,3 +58,10 @@ class FeedPostForm(forms.ModelForm):
         model = FeedPost
         fields = ['content']
 
+
+# PROJECT
+
+class ApplicationForm(forms.ModelForm):
+    class Meta:
+        model = Application
+        fields = ['cover_letter', 'price_offer']

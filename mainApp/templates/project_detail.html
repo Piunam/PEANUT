@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ project.title }}</h2>
+<p>{{ project.description }}</p>
+<p><strong>Price:</strong> ${{ project.price }}</p>
+<p><strong>Posted by:</strong> {{ project.user.username }}</p>
+
+<h3>Applications</h3>
+<ul>
+    {% for application in applications %}
+    <li>
+        <strong>{{ application.user.username }}</strong><br>
+        <p><strong>Cover Letter:</strong> {{ application.cover_letter }}</p>
+        <p><strong>Experience:</strong> {{ application.experience }}</p>
+        <p><strong>Applied at:</strong> {{ application.applied_at }}</p>
+    </li>
+    {% empty %}
+    <p>No applications yet.</p>
+    {% endfor %}
+</ul>
+{% endblock %}

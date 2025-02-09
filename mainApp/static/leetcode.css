@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&display=swap');
+.main-container{
+    padding: 20px;
+    border: 2px solid white;
+    background-color: rgb(29, 29, 29);
+    margin: 40px;
+    border-radius: 12px;
+    align-items: center;
+}
+.heading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: "Handjet", sans-serif;
+    color: #ffdf00;
+    font-size: 30px;
+    word-spacing: 10px;
+    letter-spacing: 2px;
+}
+.leetimg{
+   display: flex;
+   justify-content: center;
+}
+.leetimg > img{
+
+   border: 1px solid #ffdf00;
+   border-radius: 12px;
+}
+.startbtn{
+
+    display: flex;
+    justify-content: center;
+}
+.startbtn > button{
+    margin-top: 20px;
+    padding: 15px;
+    background-color: black;
+    border: 2px solid #ffdf00;
+    color: #ffdf00;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+.startbtn > button:hover{
+    background-color: #ffdf00;
+    color: black;
+}

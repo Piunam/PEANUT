@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ field.name }} - Information</title>
+</head>
+<body>
+    <h1>{{ field.name }}</h1>
+    <h2>Roadmap:</h2>
+    <p>{{ field.roadmap }}</p>
+    <h2>Book Recommendations:</h2>
+    <p>{{ field.books }}</p>
+    <h2>YouTube Video Recommendations:</h2>
+    <p>{{ field.youtube_videos }}</p>
+    <h2>Course Recommendations:</h2>
+    <p>{{ field.courses }}</p>
+    <a href="{% url 'search_field' %}">Back to Search</a>
+</body>
+</html>

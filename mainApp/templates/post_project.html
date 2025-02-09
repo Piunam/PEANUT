@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Post a Freelancing Project</h2>
+<form method="post" class="project-post-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="_3d-pixel-cursor__pointer">Post Project</button>
+</form>
+<a href="{% url 'freelancing_project_list' %}" class="_3d-pixel-cursor__pointer">Back to Project List</a>
+
+
+
+{% endblock %}
+

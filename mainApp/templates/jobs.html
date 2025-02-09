@@ -51,19 +51,21 @@
         <div class="main">
             <div class="sidebar">
                 <ul>
-                    <li><a href="{% url 'community_feed' %}" class="active _3d-pixel-cursor__pointer"><i class="lni lni-home"></i><span>FEED</span></a></li>
+                    <li><a href="{% url 'community_feed' %}" class=" _3d-pixel-cursor__pointer"><i class="lni lni-home"></i><span>FEED</span></a></li>
                     <li><a href="{% url 'groups' %}" class=" _3d-pixel-cursor__pointer"><i class="lni lni-text-format"></i><span>GROUPS</span></a></li>
                     <li><a href="{% url 'frandz' %}" class=" _3d-pixel-cursor__pointer"><i class="lni lni-bar-chart"></i><span>FRANDZ</span></a></li>
                     <li><a href="{% url 'hackathons' %}" class=" _3d-pixel-cursor__pointer"><i class="lni lni-grid"></i><span>HACKATHONS</span></a></li>
-                    <li><a href="{% url 'jobs' %}" class=" _3d-pixel-cursor__pointer"><i class="lni lni-bullhorn"></i><span>JOBS</span></a></li>
-                    {% comment %} {% if user.user_type == 'hirer' %} {% endcomment %}
+                    <li><a href="{% url 'jobs' %}" class="active _3d-pixel-cursor__pointer"><i class="lni lni-bullhorn"></i><span>JOBS</span></a></li>
+                    <li><a href="{% url 'mentor' %}" class=" _3d-pixel-cursor__pointer"><i class="lni lni-bullhorn"></i><span>MENTOR</span></a></li>
+                    <li><a href="{% url 'roadmap' %}" class=" _3d-pixel-cursor__pointer"><i class="lni lni-bullhorn"></i><span>ROADMAP</span></a></li>
+                    <!-- {% comment %} {% if user.user_type == 'hirer' %} {% endcomment %}
                     <li><a class="_3d-pixel-cursor__pointer post_buttons" href="{% url 'post_job' %}"><i class="lni "></i><span>Post
                                 Job</span></a></li>
                     {% comment %} {% endif %} {% endcomment %}
                     {% comment %} {% if user.user_type == 'hiree' %} {% endcomment %}
                     <li><a class="_3d-pixel-cursor__pointer post_buttons" href="{% url 'post_achievement' %}"><i class="lni "></i><span>Post
                                 Achievement</span></a></li>
-                    {% comment %} {% endif %} {% endcomment %}
+                    {% comment %} {% endif %} {% endcomment %} -->
                 </ul>
             </div>
 

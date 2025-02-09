@@ -9,6 +9,32 @@
     <link rel="stylesheet" href="{% static 'index.css' %}"> <!-- Link to your CSS file -->
     <link rel="stylesheet" href="{% static 'community.css' %}"> <!-- Link to your CSS file -->
     <link rel="stylesheet" href="{% static 'cursor.css' %}"> <!-- Link to your CSS file -->
+    <style>
+         @import url('https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&display=swap');
+        .group{
+            padding: 10px;
+            background-color: black;
+            margin: 5px;
+            margin-bottom: 19px;
+            border-radius: 12px;
+            border:1px solid #ffdf00;
+            transition: 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .group>h3{
+            color: #ffdf00;
+            font-family: "Handjet", sans-serif;
+            font-size: 25px;
+            padding: 5px;
+        }
+        .group>p{
+            font-family:Arial, Helvetica, sans-serif;
+            padding: 5px;
+        }
+        .group:hover{
+            background-color: #ffdd0043;
+        }
+    </style>
 </head>
 
 <body>
@@ -24,6 +50,7 @@
                     <li><a class="_3d-pixel-cursor__pointer" href="{% url 'home' %}">Home</a></li>
                     <li><a class="_3d-pixel-cursor__pointer" href="{% url 'community_page' %}">Community</a></li>
                     <li><a class="_3d-pixel-cursor__pointer" href="{% url 'store' %}">Store</a></li>
+                    
                 </ul>
             </nav>
             <nav>
@@ -56,14 +83,16 @@
                     <li><a href="{% url 'frandz' %}" class=" _3d-pixel-cursor__pointer"><i class="lni lni-bar-chart"></i><span>FRANDZ</span></a></li>
                     <li><a href="{% url 'hackathons' %}" class=" _3d-pixel-cursor__pointer"><i class="lni lni-grid"></i><span>HACKATHONS</span></a></li>
                     <li><a href="{% url 'jobs' %}" class=" _3d-pixel-cursor__pointer"><i class="lni lni-bullhorn"></i><span>JOBS</span></a></li>
-                    {% comment %} {% if user.user_type == 'hirer' %} {% endcomment %}
+                    <li><a href="{% url 'mentor' %}" class=" _3d-pixel-cursor__pointer"><i class="lni lni-bullhorn"></i><span>MENTOR</span></a></li>
+                    <li><a href="{% url 'roadmap' %}" class=" _3d-pixel-cursor__pointer"><i class="lni lni-bullhorn"></i><span>ROADMAP</span></a></li>
+                    <!-- {% comment %} {% if user.user_type == 'hirer' %} {% endcomment %}
                     <li><a class="_3d-pixel-cursor__pointer post_buttons" href="{% url 'post_job' %}"><i class="lni "></i><span>Post
                                 Job</span></a></li>
                     {% comment %} {% endif %} {% endcomment %}
                     {% comment %} {% if user.user_type == 'hiree' %} {% endcomment %}
                     <li><a class="_3d-pixel-cursor__pointer post_buttons" href="{% url 'post_achievement' %}"><i class="lni "></i><span>Post
                                 Achievement</span></a></li>
-                    {% comment %} {% endif %} {% endcomment %}
+                    {% comment %} {% endif %} {% endcomment %} -->
                 </ul>
             </div>
 
@@ -72,7 +101,7 @@
                     width="97%" alt="">
                 <div class="page-content">
                     <div class="main-container">
-                        <h1 class="community_heading">Welcome to the Community Page</h1>
+                        <h1 class="community_heading">Welcome to the Mentoring Page</h1>
 
                         <!-- Section for Hirees to Post Achievements -->
                         {% if user.user_type == 'hiree' %}
@@ -110,17 +139,22 @@
                     
                     <div class="side-container">
                         <!-- Display Posted Achievements in the side-container as well -->
-                        <div class="Available_Jobs">
-                            <h2>Hiree Achievements</h2>
-                            <ul class="jobs">
-                                {% for achievement in achievements %}
-                                <li class="job_description">
-                                    <h3>{{ achievement.title }}</h3>
-                                    <p>{{ achievement.description }}</p>
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
+                        <section id="groups">
+                            <div class="groups-list">
+                                <div class="group">
+                                    <h3>DATA SECURITY</h3>
+                                    <p>Discuss the latest in data protection, encryption, and cybersecurity trends.</p>
+                                </div>
+                                <div class="group">
+                                    <h3>WEB DEVELOPMENT</h3>
+                                    <p>All things web development: front-end, back-end, and full-stack discussions.</p>
+                                </div>
+                                <div class="group">
+                                    <h3>AIML</h3>
+                                    <p>Explore the world of Artificial Intelligence and Machine Learning.</p>
+                                </div>
+                            </div>
+                        </section>
                     </div>
                 </div>
 

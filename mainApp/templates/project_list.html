@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+    }
+    
+    h2 {
+        color: #333;
+    }
+
+    .button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        cursor: pointer;
+    }
+
+    .button:hover {
+        background-color: #218838;
+    }
+
+    .project-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .project-card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .project-card h3 {
+        margin-top: 0;
+        color: #333;
+    }
+
+    .project-card p {
+        color: #666;
+        margin: 10px 0;
+    }
+
+    .apply-button {
+        display: inline-block;
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
+
+    .apply-button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<h2>Freelancing Projects</h2>
+<a href="{% url 'post_project' %}" class="button">Post a Project</a>
+<ul class="project-list">
+    {% for project in projects %}
+    <li class="project-card">
+        <h3>{{ project.title }}</h3>
+        <p>{{ project.description|truncatewords:20 }}</p>
+        <p><strong>Price:</strong> ${{ project.budget }}</p>
+        <p><strong>Posted by:</strong> {{ project.user.username }}</p>
+        <p><strong>Date:</strong> {{ project.created_at|date:"F j, Y" }}</p>
+        <a href="#" class="apply-button">Apply Now</a>
+    </li>
+    {% empty %}
+    <p>No projects available at the moment.</p>
+    {% endfor %}
+</ul>
+{% endblock %}

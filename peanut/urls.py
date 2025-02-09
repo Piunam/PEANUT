@@ -23,6 +23,7 @@ from mainApp.views import compile_code
 from django.conf.urls.static import static
 from django.conf import settings
 from mainApp.views import quick_play, save_custom_timer
+from mainApp.views import apply_to_project, search_field, field_info
 
 
 urlpatterns = [
@@ -33,6 +34,11 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('social-auth', include('social_django.urls', namespace='social')),
     path("", views.home, name='home'),
+    path('apply-to-project/<int:project_id>/', views.apply_to_project, name='apply_to_project'),
+    path('freelancing/', views.freelancing_project_list, name='freelancing_project_list'),
+    path('freelancing/post-project/', views.post_project, name='post_project'),
+    path('test-face/', views.test_face_detection, name='test_face'),
+
     path('question-page/', views.question_page, name='question_page'),
     path('start-match/', views.start_match, name='start_match'),
     path('check-room-status/', views.check_room_status, name='check_room_status'),
@@ -48,19 +54,44 @@ urlpatterns = [
     path('compile/', compile_code, name='compile_code'),
     path('accounts/community/feed/', views.community_feed, name='community_feed'),
     path('accounts/community/jobs/', views.jobs, name='jobs'),
+    path('accounts/community/mentor/', views.mentor, name='mentor'),
     path('accounts/community/groups/', views.groups, name='groups'),
     path('accounts/community/frandz/', views.frandz, name='frandz'),
+    path('accounts/community/roadmap/', views.roadmap, name='roadmap'),
     path('accounts/community/hackathons/', views.hackathons, name='hackathons'),
     path('quick_play/', views.quick_play, name='quick_play'),
     path('save-custom-timer/', save_custom_timer, name='save_custom_timer'),
+    path('handle-violation/', views.handle_violation, name='handle_violation'),
 
     path('promoted/', views.promoted, name='promoted'),
     path('demoted/', views.demoted, name='demoted'),
     path('submit/', views.submit_view, name='submit'),
     path('quick-play-question-page/', views.quick_play_question_page, name='quick_play_question_page'),
     path('quick-play/', views.quick_play, name='quick_play'),
+    path('leetcode/', views.leetcode, name='leetcode'),
+    path('webdev/', views.webdev, name='webdev'),
+
+     # VIDEO CONFERENCING
+    # path('register/',views.register, name='register'),
+    # path('login/',views.login_view, name='login'),
+    path('dashboard/',views.dashboard, name='dashboard'),
+    path('meeting/',views.videocall, name='meeting'),
+    # path('logout/',views.logout_view, name='logout'),
+    path('join/',views.join_room, name='join_room'),
+    path('',views.index, name='index'),
+    path('dsa-topics/', views.dsa_topics, name='dsa_topics'),
+    path('questions/<str:topic>/', views.dsa_questions_page, name='dsa_questions_page'),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+
+
+# PROJECT
+    path('projects/', views.project_list, name='project_list'),
+    path('apply-to-project/<int:project_id>/', apply_to_project, name='apply_to_project'),
+
+# Recommendations
+    path('search/', search_field, name='search_field'),
+    path('field/<str:field_name>/', field_info, name='field_info'),

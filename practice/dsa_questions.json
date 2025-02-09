@@ -1,0 +1,325 @@
+{
+    "Array": {
+      "Easy": [
+        { "question": "What is an array?", "answer": "An array is a collection of items stored at contiguous memory locations." },
+        { "question": "How to find the maximum element in an array?", "answer": "Iterate through the array and keep track of the maximum element." },
+        { "question": "How to reverse an array?", "answer": "Use a two-pointer approach to swap elements." },
+        { "question": "What is a multi-dimensional array?", "answer": "An array of arrays." },
+        { "question": "How to merge two sorted arrays?", "answer": "Use a two-pointer technique to merge." }
+      ],
+      "Medium": [
+        { "question": "How to rotate an array?", "answer": "Reverse the whole array and then reverse the individual parts." },
+        { "question": "Find the first non-repeating element in an array.", "answer": "Use a hashmap to track counts." },
+        { "question": "How to move zeroes to the end of an array?", "answer": "Iterate and swap zeroes with non-zero elements." },
+        { "question": "Find the intersection of two arrays.", "answer": "Use a hashmap to store elements of one array." },
+        { "question": "What is the maximum subarray sum?", "answer": "Use Kadane's algorithm." }
+      ],
+      "Hard": [
+        { "question": "Find a subarray with a given sum.", "answer": "Use a hashmap to store cumulative sums." },
+        { "question": "How to find the longest increasing subsequence?", "answer": "Use dynamic programming." },
+        { "question": "What is the minimum number of jumps to reach the end of the array?", "answer": "Use a greedy approach." },
+        { "question": "How to find duplicate numbers in an array?", "answer": "Use Floyd’s Tortoise and Hare algorithm." },
+        { "question": "Find the longest consecutive sequence.", "answer": "Use a hashmap to store elements." }
+      ]
+    },
+    "String": {
+      "Easy": [
+        { "question": "What is a string?", "answer": "A string is a sequence of characters." },
+        { "question": "How to reverse a string?", "answer": "Use a two-pointer technique to swap characters." },
+        { "question": "How to check if a string is a palindrome?", "answer": "Compare the string with its reverse." },
+        { "question": "How to find the length of a string?", "answer": "Use the length property or function." },
+        { "question": "How to convert a string to an integer?", "answer": "Use parsing functions like parseInt." }
+      ],
+      "Medium": [
+        { "question": "How to find the first non-repeating character in a string?", "answer": "Use a hashmap to count characters." },
+        { "question": "How to find all permutations of a string?", "answer": "Use backtracking to generate permutations." },
+        { "question": "How to perform string compression?", "answer": "Count consecutive characters and compress." },
+        { "question": "How to replace all spaces in a string with '%20'?", "answer": "Use string replacement methods." },
+        { "question": "How to check if two strings are anagrams?", "answer": "Sort both strings and compare." }
+      ],
+      "Hard": [
+        { "question": "How to find the longest substring without repeating characters?", "answer": "Use a sliding window approach." },
+        { "question": "How to find the longest common prefix among an array of strings?", "answer": "Use vertical scanning." },
+        { "question": "How to convert a string to lowercase?", "answer": "Use string methods to convert." },
+        { "question": "How to implement a basic text editor's undo functionality?", "answer": "Use a stack to store previous states." },
+        { "question": "How to find all substrings of a string?", "answer": "Use nested loops to generate substrings." }
+      ]
+    },
+    "Linked List": {
+      "Easy": [
+        { "question": "What is a linked list?", "answer": "A linked list is a linear data structure where elements are stored in nodes, each pointing to the next." },
+        { "question": "How to traverse a linked list?", "answer": "Start from the head and visit each node until the end." },
+        { "question": "How to find the length of a linked list?", "answer": "Traverse the list and count the nodes." },
+        { "question": "What is a singly linked list?", "answer": "A linked list where each node points to the next node." },
+        { "question": "What is a doubly linked list?", "answer": "A linked list where each node points to both the next and the previous nodes." }
+      ],
+      "Medium": [
+        { "question": "How to reverse a linked list?", "answer": "Iterate through the list and change pointers." },
+        { "question": "How to detect a cycle in a linked list?", "answer": "Use Floyd’s Tortoise and Hare algorithm." },
+        { "question": "How to merge two sorted linked lists?", "answer": "Use a two-pointer approach." },
+        { "question": "How to find the middle of a linked list?", "answer": "Use two pointers, one moving faster." },
+        { "question": "How to remove the N-th node from the end of a linked list?", "answer": "Use a two-pointer technique to find the node." }
+      ],
+      "Hard": [
+        { "question": "How to flatten a multilevel linked list?", "answer": "Use a stack or recursion to flatten the list." },
+        { "question": "How to swap nodes in pairs in a linked list?", "answer": "Adjust pointers in pairs during traversal." },
+        { "question": "How to add two numbers represented by linked lists?", "answer": "Simulate addition digit by digit." },
+        { "question": "How to copy a linked list with random pointers?", "answer": "Use a hashmap to map old nodes to new nodes." },
+        { "question": "How to sort a linked list using merge sort?", "answer": "Divide the list and merge sorted halves." }
+      ]
+    },
+    "Searching Algorithm": {
+      "Easy": [
+        { "question": "What is linear search?", "answer": "Iterate through each element until the target is found." },
+        { "question": "What is binary search?", "answer": "Divide the search interval in half repeatedly." },
+        { "question": "How to search for an element in a sorted array?", "answer": "Use binary search for efficiency." },
+        { "question": "How to search for an element in an unsorted array?", "answer": "Use linear search." },
+        { "question": "What is the time complexity of linear search?", "answer": "O(n), where n is the number of elements." }
+      ],
+      "Medium": [
+        { "question": "How to find the first occurrence of a number in a sorted array?", "answer": "Use binary search to find the first position." },
+        { "question": "How to find the last occurrence of a number in a sorted array?", "answer": "Use binary search to find the last position." },
+        { "question": "How to search in a rotated sorted array?", "answer": "Modify binary search to handle rotation." },
+        { "question": "How to search for a range of numbers in a sorted array?", "answer": "Use binary search to find the start and end indices." },
+        { "question": "What is the time complexity of binary search?", "answer": "O(log n), where n is the number of elements." }
+      ],
+      "Hard": [
+        { "question": "How to find the square root of a number using binary search?", "answer": "Apply binary search within the range of numbers." },
+        { "question": "How to search in a 2D matrix?", "answer": "Treat the matrix as a flat array for binary search." },
+        { "question": "How to search for an element in a rotated sorted array with duplicates?", "answer": "Handle duplicates while using modified binary search." },
+        { "question": "How to find the intersection of two sorted arrays?", "answer": "Use two pointers to compare elements." },
+        { "question": "How to implement search in a trie?", "answer": "Use the trie structure to traverse based on characters." }
+      ]
+    },
+    "Sorting Algorithm": {
+      "Easy": [
+        { "question": "What is sorting?", "answer": "Arranging elements in a specific order." },
+        { "question": "What is bubble sort?", "answer": "Repeatedly stepping through the list, comparing adjacent elements." },
+        { "question": "What is selection sort?", "answer": "Selecting the smallest element and swapping it with the first unsorted element." },
+        { "question": "What is insertion sort?", "answer": "Building a sorted array one element at a time." },
+        { "question": "What is the time complexity of bubble sort?", "answer": "O(n^2), where n is the number of elements." }
+      ],
+      "Medium": [
+        { "question": "What is merge sort?", "answer": "A divide-and-conquer algorithm that divides the array in half." },
+        { "question": "What is quicksort?", "answer": "Choosing a 'pivot' and partitioning the array." },
+        { "question": "How does counting sort work?", "answer": "Counting occurrences of each element and using them to place elements." },
+        { "question": "How to implement radix sort?", "answer": "Sorting numbers digit by digit." },
+        { "question": "What is the time complexity of merge sort?", "answer": "O(n log n), where n is the number of elements." }
+      ],
+      "Hard": [
+        { "question": "How to implement heap sort?", "answer": "Using a max heap to sort elements." },
+        { "question": "What is the time complexity of quicksort?", "answer": "Average O(n log n) and worst-case O(n^2)." },
+        { "question": "How to sort an array with an unknown range of values?", "answer": "Use counting sort if the range is small." },
+        { "question": "How to sort a linked list?", "answer": "Use merge sort for linked lists." },
+        { "question": "What is the k-th largest element in an array?", "answer": "Use quickselect or heap methods." }
+      ]
+    },
+    "Divide and Conquer Algorithm": {
+      "Easy": [
+        { "question": "What is divide and conquer?", "answer": "An algorithm design paradigm that divides problems into subproblems." },
+        { "question": "How does merge sort use divide and conquer?", "answer": "It divides the array into halves, sorts them, and merges." },
+        { "question": "How does quicksort use divide and conquer?", "answer": "It partitions the array around a pivot." },
+        { "question": "What is binary search?", "answer": "Finding an element by repeatedly dividing the search interval in half." },
+        { "question": "How does the Strassen algorithm work?", "answer": "It multiplies matrices faster than the conventional method." }
+      ],
+      "Medium": [
+        { "question": "How to find the closest pair of points?", "answer": "Use divide and conquer to efficiently find the closest points." },
+        { "question": "How to count inversions in an array?", "answer": "Use modified merge sort to count inversions." },
+        { "question": "What is the maximum subarray problem?", "answer": "Use divide and conquer to find the maximum sum." },
+        { "question": "How does Karatsuba algorithm multiply large numbers?", "answer": "It splits numbers and uses recursive multiplication." },
+        { "question": "How to find the median of two sorted arrays?", "answer": "Use binary search in the shorter array." }
+      ],
+      "Hard": [
+        { "question": "How to solve the closest pair of points problem?", "answer": "Combine divide and conquer with a geometric approach." },
+        { "question": "How does the FFT (Fast Fourier Transform) work?", "answer": "It's a divide and conquer algorithm for computing the DFT." },
+        { "question": "How to solve the maximum product subarray problem?", "answer": "Use divide and conquer to find the maximum product." },
+        { "question": "What is the convex hull problem?", "answer": "Finding the smallest convex shape that encompasses all points." },
+        { "question": "How to perform integer multiplication using divide and conquer?", "answer": "Use Karatsuba's algorithm for efficient multiplication." }
+      ]
+    },
+    "Stack": {
+      "Easy": [
+        { "question": "What is a stack?", "answer": "A linear data structure that follows the Last In First Out (LIFO) principle." },
+        { "question": "How to implement a stack using an array?", "answer": "Use an array to store elements and maintain a pointer for the top." },
+        { "question": "How to check for balanced parentheses using a stack?", "answer": "Push opening brackets onto the stack and pop when closing brackets are found." },
+        { "question": "What is the time complexity for push and pop operations in a stack?", "answer": "O(1) for both operations." },
+        { "question": "How to reverse a string using a stack?", "answer": "Push all characters onto the stack and pop them." }
+      ],
+      "Medium": [
+        { "question": "How to implement a stack using linked lists?", "answer": "Use a linked list where the head is the top of the stack." },
+        { "question": "What is a postfix expression?", "answer": "An expression where operators follow their operands." },
+        { "question": "How to evaluate a postfix expression using a stack?", "answer": "Push operands onto the stack and apply operators." },
+        { "question": "How to find the next greater element using a stack?", "answer": "Use a stack to maintain indices of elements." },
+        { "question": "What is the maximum area of a histogram?", "answer": "Use a stack to find boundaries for each bar." }
+      ],
+      "Hard": [
+        { "question": "How to implement a min stack?", "answer": "Use an additional stack to keep track of minimums." },
+        { "question": "How to sort a stack using recursion?", "answer": "Use recursion to insert elements in sorted order." },
+        { "question": "How to evaluate infix expressions?", "answer": "Use two stacks, one for operators and one for operands." },
+        { "question": "How to check for balanced parentheses in an expression?", "answer": "Use a stack to track opening and closing brackets." },
+        { "question": "What is the largest rectangle in a histogram problem?", "answer": "Use a stack to calculate maximum area." }
+      ]
+    },
+    "Queue": {
+      "Easy": [
+        { "question": "What is a queue?", "answer": "A linear data structure that follows the First In First Out (FIFO) principle." },
+        { "question": "How to implement a queue using an array?", "answer": "Use an array to store elements and maintain front and rear pointers." },
+        { "question": "What is the time complexity for enqueue and dequeue operations?", "answer": "O(1) for both operations." },
+        { "question": "How to implement a circular queue?", "answer": "Use an array and wrap around indices when reaching the end." },
+        { "question": "What is a double-ended queue (deque)?", "answer": "A queue that allows insertion and deletion at both ends." }
+      ],
+      "Medium": [
+        { "question": "How to implement a queue using linked lists?", "answer": "Use a linked list where the head points to the front and tail to the rear." },
+        { "question": "How to implement a priority queue?", "answer": "Use a heap data structure to manage priorities." },
+        { "question": "What is a blocking queue?", "answer": "A queue that blocks operations when it is empty or full." },
+        { "question": "How to use a queue to reverse a string?", "answer": "Enqueue characters and dequeue to form the reversed string." },
+        { "question": "How to perform a level order traversal in a tree using a queue?", "answer": "Use a queue to explore each level of the tree." }
+      ],
+      "Hard": [
+        { "question": "How to implement a queue using two stacks?", "answer": "Use two stacks to reverse the order of elements." },
+        { "question": "How to check if a binary tree is a binary search tree using a queue?", "answer": "Use a queue to maintain an ordered structure during traversal." },
+        { "question": "How to implement a sliding window maximum using a deque?", "answer": "Use a deque to store indices of useful elements." },
+        { "question": "How to design a circular buffer?", "answer": "Implement a fixed-size buffer using a circular queue." },
+        { "question": "How to schedule tasks using a queue?", "answer": "Use a queue to manage task execution order." }
+      ]
+    },
+    "Tree Data Structure": {
+      "Easy": [
+        { "question": "What is a binary tree?", "answer": "A tree where each node has at most two children." },
+        { "question": "What is the height of a tree?", "answer": "The length of the longest path from the root to a leaf." },
+        { "question": "How to traverse a binary tree?", "answer": "Use inorder, preorder, or postorder traversal." },
+        { "question": "What is a leaf node?", "answer": "A node that does not have any children." },
+        { "question": "What is a full binary tree?", "answer": "A tree where every node has 0 or 2 children." }
+      ],
+      "Medium": [
+        { "question": "How to find the lowest common ancestor of two nodes?", "answer": "Use recursive traversal to find the ancestor." },
+        { "question": "How to check if a tree is balanced?", "answer": "Check the heights of subtrees for balance." },
+        { "question": "What is a binary search tree (BST)?", "answer": "A binary tree where left children are smaller and right are larger." },
+        { "question": "How to find the maximum depth of a binary tree?", "answer": "Use recursion to find the depth." },
+        { "question": "How to convert a sorted array to a binary search tree?", "answer": "Use the middle element as the root recursively." }
+      ],
+      "Hard": [
+        { "question": "How to serialize and deserialize a binary tree?", "answer": "Use preorder traversal for serialization and a queue for deserialization." },
+        { "question": "How to find the diameter of a binary tree?", "answer": "Use depth-first search to find the longest path." },
+        { "question": "How to recover a binary search tree?", "answer": "Inorder traversal to find swapped nodes." },
+        { "question": "What is a trie data structure?", "answer": "A tree used for storing a dynamic set of strings." },
+        { "question": "How to flatten a binary tree to a linked list?", "answer": "Use preorder traversal and reassign pointers." }
+      ]
+    },
+    "Graph Data Structure": {
+      "Easy": [
+        { "question": "What is a graph?", "answer": "A collection of nodes connected by edges." },
+        { "question": "What is a vertex?", "answer": "A node in a graph." },
+        { "question": "What is an edge?", "answer": "A connection between two vertices." },
+        { "question": "What is a directed graph?", "answer": "A graph where edges have a direction." },
+        { "question": "What is a weighted graph?", "answer": "A graph where edges have weights associated with them." }
+      ],
+      "Medium": [
+        { "question": "How to perform a breadth-first search (BFS)?", "answer": "Use a queue to explore nodes layer by layer." },
+        { "question": "How to perform a depth-first search (DFS)?", "answer": "Use recursion or a stack to explore nodes." },
+        { "question": "What is Dijkstra's algorithm?", "answer": "An algorithm for finding the shortest paths from a source vertex." },
+        { "question": "How to detect a cycle in a graph?", "answer": "Use DFS or a disjoint-set data structure." },
+        { "question": "What is the difference between BFS and DFS?", "answer": "BFS explores layer by layer while DFS explores depth first." }
+      ],
+      "Hard": [
+        { "question": "What is the minimum spanning tree?", "answer": "A spanning tree with the minimum total edge weight." },
+        { "question": "How to implement Prim's algorithm?", "answer": "Start from a vertex and add edges with minimum weight." },
+        { "question": "How to implement Kruskal's algorithm?", "answer": "Sort edges and use disjoint sets to add them." },
+        { "question": "How to find strongly connected components in a directed graph?", "answer": "Use Kosaraju's or Tarjan's algorithm." },
+        { "question": "What is the traveling salesman problem?", "answer": "Finding the shortest possible route that visits each vertex once." }
+      ]
+    },
+    "Greedy Methodology": {
+      "Easy": [
+        { "question": "What is a greedy algorithm?", "answer": "An algorithm that makes the locally optimal choice at each step." },
+        { "question": "What is the activity selection problem?", "answer": "Selecting the maximum number of non-overlapping activities." },
+        { "question": "How to find the minimum number of coins for a given amount?", "answer": "Use the largest denominations first." },
+        { "question": "What is Huffman coding?", "answer": "A compression algorithm that uses variable-length codes." },
+        { "question": "What is the fractional knapsack problem?", "answer": "Maximizing profit by taking fractions of items." }
+      ],
+      "Medium": [
+        { "question": "How to find the minimum spanning tree using Kruskal's algorithm?", "answer": "Sort edges and use disjoint sets to build the tree." },
+        { "question": "How to solve the job sequencing problem?", "answer": "Sort jobs by profit and select jobs within time constraints." },
+        { "question": "How to schedule tasks with deadlines?", "answer": "Select tasks based on their profit and deadlines." },
+        { "question": "What is the minimum number of platforms required for a train station?", "answer": "Use a greedy approach to calculate overlap." },
+        { "question": "How to maximize the sum of non-adjacent elements?", "answer": "Use dynamic programming with greedy selection." }
+      ],
+      "Hard": [
+        { "question": "How to solve the coin change problem?", "answer": "Use dynamic programming or greedy if denominations allow." },
+        { "question": "What is the job scheduling with deadlines problem?", "answer": "Maximizing profit by scheduling jobs with deadlines." },
+        { "question": "How to solve the maximum size square submatrix problem?", "answer": "Use a greedy approach to check for maximum area." },
+        { "question": "What is the minimum cost to connect points in a 2D plane?", "answer": "Use a greedy approach similar to the MST problem." },
+        { "question": "How to solve the lemonade change problem?", "answer": "Use a greedy approach to keep track of coins." }
+      ]
+    },
+    "Recursion": {
+      "Easy": [
+        { "question": "What is recursion?", "answer": "A function that calls itself to solve a problem." },
+        { "question": "How to calculate factorial using recursion?", "answer": "n! = n * factorial(n-1)." },
+        { "question": "How to compute Fibonacci numbers using recursion?", "answer": "fib(n) = fib(n-1) + fib(n-2)." },
+        { "question": "What is the base case in recursion?", "answer": "The condition that stops the recursion." },
+        { "question": "How to solve the Towers of Hanoi problem?", "answer": "Move disks recursively following rules." }
+      ],
+      "Medium": [
+        { "question": "How to solve the N-Queens problem using recursion?", "answer": "Place queens and backtrack on conflicts." },
+        { "question": "How to perform a binary search using recursion?", "answer": "Divide the array and search in the half." },
+        { "question": "What is backtracking in recursion?", "answer": "Exploring all possibilities and backtracking on failures." },
+        { "question": "How to solve the subset sum problem?", "answer": "Use recursion to explore all subsets." },
+        { "question": "How to solve the combination sum problem?", "answer": "Explore combinations recursively until a target is reached." }
+      ],
+      "Hard": [
+        { "question": "How to generate all permutations of a string?", "answer": "Use recursion to swap characters." },
+        { "question": "How to solve the palindrome partitioning problem?", "answer": "Use backtracking to partition the string." },
+        { "question": "How to solve the sudoku solver problem?", "answer": "Use backtracking to fill the grid." },
+        { "question": "How to find all subsets of a set?", "answer": "Use recursion to explore each element." },
+        { "question": "How to solve the expression evaluation problem?", "answer": "Evaluate recursively by splitting at operators." }
+      ]
+    },
+    "Backtracking Algorithm": {
+      "Easy": [
+        { "question": "What is backtracking?", "answer": "An algorithmic technique for solving problems incrementally." },
+        { "question": "How to solve the N-Queens problem?", "answer": "Place queens incrementally and backtrack on conflicts." },
+        { "question": "How to find all combinations of a set?", "answer": "Use backtracking to explore all possibilities." },
+        { "question": "What is the difference between backtracking and recursion?", "answer": "Backtracking explores all paths while recursion may not." },
+        { "question": "How to solve the subset sum problem?", "answer": "Use backtracking to find subsets that sum to a target." }
+      ],
+      "Medium": [
+        { "question": "How to solve the word search problem?", "answer": "Explore directions recursively and backtrack." },
+        { "question": "How to solve the sudoku problem?", "answer": "Fill cells incrementally and backtrack on failures." },
+        { "question": "How to find all valid parentheses combinations?", "answer": "Generate and validate combinations recursively." },
+        { "question": "How to solve the permutation problem?", "answer": "Generate permutations incrementally and backtrack." },
+        { "question": "How to solve the combinations problem?", "answer": "Use backtracking to generate combinations." }
+      ],
+      "Hard": [
+        { "question": "How to solve the Knight's Tour problem?", "answer": "Use backtracking to explore all moves." },
+        { "question": "How to solve the Hamiltonian path problem?", "answer": "Explore paths recursively and backtrack on failures." },
+        { "question": "How to solve the 0/1 Knapsack problem using backtracking?", "answer": "Explore item inclusion and exclusion recursively." },
+        { "question": "How to solve the Hamiltonian cycle problem?", "answer": "Check if a cycle can be formed using backtracking." },
+        { "question": "How to solve the permutation with duplicates problem?", "answer": "Use backtracking to generate unique permutations." }
+      ]
+    },
+    "Dynamic Programming": {
+      "Easy": [
+        { "question": "What is dynamic programming?", "answer": "An optimization technique to solve problems by breaking them into simpler subproblems." },
+        { "question": "How to calculate Fibonacci numbers using dynamic programming?", "answer": "Store results in an array to avoid recomputation." },
+        { "question": "What is the difference between memoization and tabulation?", "answer": "Memoization stores results recursively, tabulation iteratively." },
+        { "question": "How to solve the coin change problem using dynamic programming?", "answer": "Use a table to track minimum coins for each amount." },
+        { "question": "What is the longest common subsequence problem?", "answer": "Finding the longest subsequence present in both sequences." }
+      ],
+      "Medium": [
+        { "question": "How to solve the longest increasing subsequence problem?", "answer": "Use dynamic programming to track increasing elements." },
+        { "question": "How to solve the knapsack problem?", "answer": "Maximize value by considering weight and profit." },
+        { "question": "How to solve the edit distance problem?", "answer": "Calculate minimum operations to convert one string to another." },
+        { "question": "How to solve the longest palindromic substring problem?", "answer": "Use dynamic programming to track palindromes." },
+        { "question": "How to solve the maximum subarray sum problem?", "answer": "Use Kadane's algorithm to find the maximum sum." }
+      ],
+      "Hard": [
+        { "question": "How to solve the traveling salesman problem?", "answer": "Use dynamic programming to explore all paths." },
+        { "question": "How to solve the maximum profit job scheduling problem?", "answer": "Sort jobs and use dynamic programming to maximize profit." },
+        { "question": "How to solve the word break problem?", "answer": "Use dynamic programming to segment words into valid dictionary entries." },
+        { "question": "How to solve the unique paths problem?", "answer": "Use dynamic programming to count unique paths on a grid." },
+        { "question": "How to solve the burst balloons problem?", "answer": "Use dynamic programming to maximize profit from bursting balloons." }
+      ]
+    }
+  }
+  

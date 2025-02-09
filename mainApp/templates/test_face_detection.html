@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>Face Detection Test Page</h2>
+    
+    <h3>Model Files Found:</h3>
+    <ul>
+    {% for file in model_files %}
+        <li>{{ file }}</li>
+    {% endfor %}
+    </ul>
+    
+    <p>Models Path: {{ models_path }}</p>
+    
+    <div class="webcam-test">
+        <video id="video" width="640" height="480" autoplay></video>
+        <canvas id="overlay"></canvas>
+        <div id="status">Initializing...</div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
+<script>
+const MODEL_URL = "{% static 'models' %}";
+console.log('Using model URL:', MODEL_URL);
+
+async function initFaceDetection() {
+    const status = document.getElementById('status');
+    
+    try {
+        status.textContent = 'Loading models...';
+        await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+        status.textContent = 'Models loaded! Starting webcam...';
+        
+        const video = document.getElementById('video');
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        
+        status.textContent = 'Everything initialized!';
+    } catch (error) {
+        status.textContent = 'Error: ' + error.message;
+        console.error(error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', initFaceDetection);
+</script>
+{% endblock %}

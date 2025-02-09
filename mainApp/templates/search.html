@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Learning Resources</title>
+</head>
+<body>
+    <h1>Search Learning Resources</h1>
+    <form method="GET" action="{% url 'search_field' %}">
+        <input type="text" name="query" placeholder="Search Here" class="search-bar" value="{{ query }}">
+        <button type="submit" class="search-button _3d-pixel-cursor__pointer">Search</button>
+    </form>
+
+    {% if query %}
+        <h2>Results for "{{ query }}":</h2>
+        <ul>
+            {% for field in fields %}
+                <li>
+                    <a href="{% url 'field_info' field.name %}">{{ field.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No results found.</p>
+    {% endif %}
+</body>
+</html>
