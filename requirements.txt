@@ -2,11 +2,11 @@
 # blinker @ file:///C:/Users/dev-admin/perseverance-python-buildout/croot/blinker_1699474692786/work
 # Brotli @ file:///C:/b/abs_3d36mno480/croot/brotli-split_1714483178642/work
 #certifi @ file:///C:/b/abs_59o0xj7aav/croot/certifi_1734473304008/work/certifi
-cffi @ file:///C:/b/abs_90yq4lmu83/croot/cffi_1726856448345/work 
+#cffi @ file:///C:/b/abs_90yq4lmu83/croot/cffi_1726856448345/work 
 channels==4.1.0
-charset-normalizer @ file:///croot/charset-normalizer_1721748349566/work
-cryptography @ file:///C:/b/abs_35g500qir4/croot/cryptography_1724940575116/work
-defusedxml @ file:///tmp/build/80754af9/defusedxml_1615228127516/work
+#charset-normalizer @ file:///croot/charset-normalizer_1721748349566/work
+#cryptography @ file:///C:/b/abs_35g500qir4/croot/cryptography_1724940575116/work
+#defusedxml @ file:///tmp/build/80754af9/defusedxml_1615228127516/work
 dj-database-url==2.3.0
 Django==5.1.2
 django-ckeditor==6.7.2
