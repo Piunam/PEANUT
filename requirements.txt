@@ -10,8 +10,8 @@
  dj-database-url==2.3.0
  Django==5.1.2
  django-ckeditor==6.7.2
- # django-cors-headers @ file:///home/conda/feedstock_root/build_artifacts/django-cors-headers_1734947229205/work
- # django-extensions @ file:///home/conda/feedstock_root/build_artifacts/django-extensions_1685993622656/work
+ django-cors-headers @ file:///home/conda/feedstock_root/build_artifacts/django-cors-headers_1734947229205/work
+ django-extensions @ file:///home/conda/feedstock_root/build_artifacts/django-extensions_1685993622656/work
  django-grappelli==4.0.1
  django-jet==1.0.8
  django-js-asset==3.0.1
